@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "357765815799",
+    "firebase_url": "https://xoso-9fc9a.firebaseio.com",
+    "project_id": "xoso-9fc9a",
+    "storage_bucket": "xoso-9fc9a.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:357765815799:android:a5d4bc24f840f2ac11a2f2",
+        "android_client_info": {
+          "package_name": "com.huuluan.xoso"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "357765815799-m8hs82bhc3o2m0geonnfn6v0s15eu2nk.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDA6pF9IbYlwXlB4xDmlfLN1DwxE3DIw5U"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "357765815799-m8hs82bhc3o2m0geonnfn6v0s15eu2nk.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

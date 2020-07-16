@@ -17,6 +17,8 @@ import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Feather from 'react-native-vector-icons/Feather';
 import { AuthContext } from '../components/context';
 
+// import AsyncStorage from '@react-native-community/async-storage';
+
 const SignInScreen = ({navigation}) => {
 
     const [data, setData] = React.useState({
@@ -118,6 +120,8 @@ const SignInScreen = ({navigation}) => {
         // }
         // signIn(foundUser);
 
+        // let fcmToken1 = await AsyncStorage.getItem('fcmToken');
+        // console.log('co:', fcmToken1);
         if(userName){
             if(password){
                 registerCall(userName, password);
@@ -133,6 +137,12 @@ const SignInScreen = ({navigation}) => {
     }
 
     const registerCall = (userName, password) => {
+
+        
+
+           
+
+
         // console.log(userName);
         return fetch('https://nhocbi.com/xoso/register', { 
           method: 'POST',
@@ -141,7 +151,7 @@ const SignInScreen = ({navigation}) => {
             'Content-Type': 'application/json',
           },
           body: JSON.stringify({
-            token: 'luanluan',
+            token: fcmToken,
             username: userName,
             password: password,
             })

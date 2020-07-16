@@ -36,6 +36,8 @@ target 'XosoHuuLuan' do
 
   pod 'BVLinearGradient', :path => '../node_modules/react-native-linear-gradient'
   
+  pod 'RNFirebase', :path => '../node_modules/react-native-firebase'
+
   target 'XosoHuuLuanTests' do
     inherit! :search_paths
     # Pods for testing

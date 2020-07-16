@@ -33,7 +33,7 @@ import { AuthContext } from './components/context';
 import RootStackScreen from './screens/RootStackScreen';
 
 import AsyncStorage from '@react-native-community/async-storage';
-
+import firebase from 'react-native-firebase';
 const Drawer = createDrawerNavigator();
 
 const App = () => {
@@ -153,7 +153,106 @@ const App = () => {
       // console.log('user token: ', userToken);
       dispatch({ type: 'RETRIEVE_TOKEN', token: userToken });
     }, 1000);
+    checkPermission();
+    createNotificationListeners(); //add this line
   }, []);
+
+  
+
+  //1
+  const checkPermission = async() =>  {
+    
+    const enabled = await firebase.messaging().hasPermission();
+    
+    if (enabled) {
+      getToken();
+    } else {
+      requestPermission();
+    }
+  }
+
+  //3
+  const getToken = async() => {
+    
+    let fcmToken = await AsyncStorage.getItem('fcmToken');
+    
+    // this.setState({ fcmToken: fcmToken });  
+   
+    if (!fcmToken) {
+      fcmToken = await firebase.messaging().getToken();
+      
+      if (fcmToken) {
+        // user has a device token
+        await AsyncStorage.setItem('fcmToken', fcmToken);
+        
+
+      }
+      
+    }
+    console.log('fcmToken33:', fcmToken);
+  }
+
+  //2
+  const requestPermission = async() => {
+    try {
+      await firebase.messaging().requestPermission();
+      // User has authorised
+      this.getToken();
+    } catch (error) {
+      // User has rejected permissions
+      console.log('permission rejected');
+    }
+  }
+
+  const createNotificationListeners = async() => {
+    const notificationOpen: NotificationOpen = await firebase.notifications().getInitialNotification();
+        if (notificationOpen) {
+            const action = notificationOpen.action;
+            const notification: Notification = notificationOpen.notification;
+
+          // console.log('111');
+            navigationDeferred.promise.then(() => {
+            //   this.notificationAction(notification);
+            });
+
+        }
+
+        const channel = new firebase.notifications.Android.Channel('test-channel', 'Test Channel', firebase.notifications.Android.Importance.Max)
+                .setDescription('My apps test channel');
+        // Create the channel
+        firebase.notifications().android.createChannel(channel);
+        this.notificationDisplayedListener = firebase.notifications().onNotificationDisplayed((notification: Notification) => {
+            // Process your notification as required
+            // ANDROID: Remote notifications do not contain the channel ID. You will have to specify this manually if you'd like to re-display the notification.
+        });
+        this.notificationListener = firebase.notifications().onNotification((notification: Notification) => {
+            // Process your notification as required
+            notification
+                .android.setChannelId('test-channel')
+            firebase.notifications()
+                .displayNotification(notification);
+                // console.log('222');
+
+        });
+        this.notificationOpenedListener = firebase.notifications().onNotificationOpened( async (notificationOpen: NotificationOpen) => {
+            // Get the action triggered by the notification being opened
+            const action = notificationOpen.action;
+            // Get information about the notification that was opened
+            const notification: Notification = notificationOpen.notification;
+            // console.log('333');
+            navigationDeferred.promise.then(() => {
+            //   this.notificationAction(notification);
+            });
+        });
+
+        this.notificationTopics = firebase.messaging().subscribeToTopic('all');
+
+        this.createRefreshTokenListeners = firebase.messaging().onTokenRefresh(async fcmToken => {
+          await this.updateFcmToken(fcmToken);
+          await AsyncStorage.setItem('fcmToken', fcmToken);
+          // fetch('https://nhocbi.com/xoso/mienbac');
+        });
+  }
 
   if( loginState.isLoading ) {
     return(

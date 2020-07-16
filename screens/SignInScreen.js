@@ -126,6 +126,8 @@ const SignInScreen = ({navigation}) => {
     }
 
     const loginCall = (userName, password) => {
+
+        
         // console.log(userName);
         return fetch('https://nhocbi.com/xoso/login', { 
           method: 'POST',
