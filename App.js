@@ -26,7 +26,7 @@ import { DrawerContent } from './screens/DrawerContent';
 import MainTabScreen from './screens/MainTabScreen';
 import SupportScreen from './screens/SupportScreen';
 import SettingsScreen from './screens/SettingsScreen';
-import BookmarkScreen from './screens/BookmarkScreen';
+import History from './screens/History';
 
 import { AuthContext } from './components/context';
 
@@ -270,7 +270,7 @@ const App = () => {
           <Drawer.Screen name="HomeDrawer" component={MainTabScreen} />
           <Drawer.Screen name="SupportScreen" component={SupportScreen} />
           <Drawer.Screen name="SettingsScreen" component={SettingsScreen} />
-          <Drawer.Screen name="BookmarkScreen" component={BookmarkScreen} />
+          <Drawer.Screen name="History" component={History} />
         </Drawer.Navigator>
       )
     :

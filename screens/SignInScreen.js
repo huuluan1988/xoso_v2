@@ -37,7 +37,7 @@ const SignInScreen = ({navigation}) => {
     const { signIn } = React.useContext(AuthContext);
 
     const textInputChange = (val) => {
-        if( val.trim().length >= 3 ) {
+        if( val.trim().length >= 4 ) {
             setData({
                 ...data,
                 username: val,
@@ -161,7 +161,7 @@ const SignInScreen = ({navigation}) => {
       <View style={styles.container}>
           <StatusBar backgroundColor='#009387' barStyle="light-content"/>
         <View style={styles.header}>
-            <Text style={styles.text_header}>Welcome!</Text>
+            <Text style={styles.text_header}>Đăng Nhập!</Text>
         </View>
         <Animatable.View 
             animation="fadeInUpBig"
@@ -171,7 +171,7 @@ const SignInScreen = ({navigation}) => {
         >
             <Text style={[styles.text_footer, {
                 color: colors.text
-            }]}>Username</Text>
+            }]}>Tên</Text>
             <View style={styles.action}>
                 <FontAwesome 
                     name="user-o"
@@ -179,7 +179,7 @@ const SignInScreen = ({navigation}) => {
                     size={20}
                 />
                 <TextInput 
-                    placeholder="Your Username"
+                    placeholder="Tên Đăng Nhập"
                     placeholderTextColor="#666666"
                     style={[styles.textInput, {
                         color: colors.text
@@ -202,15 +202,15 @@ const SignInScreen = ({navigation}) => {
             </View>
             { data.isValidUser ? null : 
             <Animatable.View animation="fadeInLeft" duration={500}>
-            <Text style={styles.errorMsg}>Username must be 4 characters long.</Text>
+            <Text style={styles.errorMsg}>Tên ít nhất 4 ký tự.</Text>
             </Animatable.View>
             }
             
 
             <Text style={[styles.text_footer, {
                 color: colors.text,
-                marginTop: 35
-            }]}>Password</Text>
+                marginTop: 25
+            }]}>Mật Khẩu</Text>
             <View style={styles.action}>
                 <Feather 
                     name="lock"
@@ -218,7 +218,7 @@ const SignInScreen = ({navigation}) => {
                     size={20}
                 />
                 <TextInput 
-                    placeholder="Your Password"
+                    placeholder="Mật Khẩu"
                     placeholderTextColor="#666666"
                     secureTextEntry={data.secureTextEntry ? true : false}
                     style={[styles.textInput, {
@@ -247,7 +247,7 @@ const SignInScreen = ({navigation}) => {
             </View>
             { data.isValidPassword ? null : 
             <Animatable.View animation="fadeInLeft" duration={500}>
-            <Text style={styles.errorMsg}>Password must be 8 characters long.</Text>
+            <Text style={styles.errorMsg}>Mật Khẩu ít nhất 3 ký tự.</Text>
             </Animatable.View>
             }
             
@@ -262,7 +262,7 @@ const SignInScreen = ({navigation}) => {
                 >
                     <Text style={[styles.textSign, {
                         color:'#fff'
-                    }]}>Sign In</Text>
+                    }]}>Đăng Nhập</Text>
                 </LinearGradient>
                 </TouchableOpacity>
 
@@ -276,7 +276,7 @@ const SignInScreen = ({navigation}) => {
                 >
                     <Text style={[styles.textSign, {
                         color: '#009387'
-                    }]}>Sign Up</Text>
+                    }]}>Đăng Ký</Text>
                 </TouchableOpacity>
             </View>
         </Animatable.View>

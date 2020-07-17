@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { 
     View, 
     Text, 
@@ -17,10 +17,13 @@ import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Feather from 'react-native-vector-icons/Feather';
 import { AuthContext } from '../components/context';
 
-// import AsyncStorage from '@react-native-community/async-storage';
+import AsyncStorage from '@react-native-community/async-storage';
+
+// const [fcmToken] = React.useState('');
 
 const SignInScreen = ({navigation}) => {
 
+    
     const [data, setData] = React.useState({
         username: '',
         password: '',
@@ -31,6 +34,15 @@ const SignInScreen = ({navigation}) => {
     });
 
     const { signIn } = React.useContext(AuthContext);
+
+    useEffect(() => {
+
+        
+    }, []);
+
+   
+    
+   
 
     const textInputChange = (val) => {
         if( val.length !== 0 ) {
@@ -120,8 +132,8 @@ const SignInScreen = ({navigation}) => {
         // }
         // signIn(foundUser);
 
-        // let fcmToken1 = await AsyncStorage.getItem('fcmToken');
-        // console.log('co:', fcmToken1);
+        
+
         if(userName){
             if(password){
                 registerCall(userName, password);
@@ -136,12 +148,11 @@ const SignInScreen = ({navigation}) => {
         //   signIn(userName, password);
     }
 
-    const registerCall = (userName, password) => {
-
-        
-
+    const registerCall = async(userName, password) => {
            
 
+        let fcmToken = await AsyncStorage.getItem('fcmToken');
+        console.log('co:', fcmToken);
 
         // console.log(userName);
         return fetch('https://nhocbi.com/xoso/register', { 
@@ -176,14 +187,14 @@ const SignInScreen = ({navigation}) => {
       <View style={styles.container}>
           <StatusBar backgroundColor='#009387' barStyle="light-content"/>
         <View style={styles.header}>
-            <Text style={styles.text_header}>Register Now!</Text>
+            <Text style={styles.text_header}>Đăng ký ngay!</Text>
         </View>
         <Animatable.View 
             animation="fadeInUpBig"
             style={styles.footer}
         >
             <ScrollView>
-            <Text style={styles.text_footer}>Username</Text>
+            <Text style={styles.text_footer}>Tên</Text>
             <View style={styles.action}>
                 <FontAwesome 
                     name="user-o"
@@ -191,7 +202,7 @@ const SignInScreen = ({navigation}) => {
                     size={20}
                 />
                 <TextInput 
-                    placeholder="Your Username"
+                    placeholder="Tên đăng ký"
                     style={styles.textInput}
                     autoCapitalize="none"
                     onChangeText={(val) => textInputChange(val)}
@@ -212,7 +223,7 @@ const SignInScreen = ({navigation}) => {
 
             <Text style={[styles.text_footer, {
                 marginTop: 35
-            }]}>Password</Text>
+            }]}>Mật khẩu</Text>
             <View style={styles.action}>
                 <Feather 
                     name="lock"
@@ -220,7 +231,7 @@ const SignInScreen = ({navigation}) => {
                     size={20}
                 />
                 <TextInput 
-                    placeholder="Your Password"
+                    placeholder="Mật khẩu"
                     secureTextEntry={data.secureTextEntry ? true : false}
                     style={styles.textInput}
                     autoCapitalize="none"
@@ -247,7 +258,7 @@ const SignInScreen = ({navigation}) => {
 
             <Text style={[styles.text_footer, {
                 marginTop: 35
-            }]}>Confirm Password</Text>
+            }]}>Nhắc lại  mật khẩu</Text>
             <View style={styles.action}>
                 <Feather 
                     name="lock"
@@ -255,7 +266,7 @@ const SignInScreen = ({navigation}) => {
                     size={20}
                 />
                 <TextInput 
-                    placeholder="Confirm Your Password"
+                    placeholder="Nhắc lại  mật khẩu"
                     secureTextEntry={data.confirm_secureTextEntry ? true : false}
                     style={styles.textInput}
                     autoCapitalize="none"
@@ -290,7 +301,7 @@ const SignInScreen = ({navigation}) => {
                 >
                     <Text style={[styles.textSign, {
                         color:'#fff'
-                    }]}>Sign Up</Text>
+                    }]}>Đăng ký</Text>
                 </LinearGradient>
                 </TouchableOpacity>
 
@@ -304,7 +315,7 @@ const SignInScreen = ({navigation}) => {
                 >
                     <Text style={[styles.textSign, {
                         color: '#009387'
-                    }]}>Sign In</Text>
+                    }]}>Đăng nhập</Text>
                 </TouchableOpacity>
             </View>
             </ScrollView>

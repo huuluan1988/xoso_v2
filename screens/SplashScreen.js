@@ -36,7 +36,7 @@ const SplashScreen = ({navigation}) => {
         >
             <Text style={[styles.title, {
                 color: colors.text
-            }]}>Stay connected with everyone!</Text>
+            }]}>Dò Xổ Số , Lô Đề nhanh nhất trong ngày!</Text>
             <Text style={styles.text}>Đăng Nhập Tài Khoản</Text>
             <View style={styles.button}>
             <TouchableOpacity onPress={()=>navigation.navigate('SignInScreen')}>
@@ -44,7 +44,7 @@ const SplashScreen = ({navigation}) => {
                     colors={['#08d4c4', '#01ab9d']}
                     style={styles.signIn}
                 >
-                    <Text style={styles.textSign}>Get Started</Text>
+                    <Text style={styles.textSign}>Bắt Đầu</Text>
                     <MaterialIcons 
                         name="navigate-next"
                         color="#fff"
@@ -87,7 +87,7 @@ const styles = StyleSheet.create({
   },
   title: {
       color: '#05375a',
-      fontSize: 30,
+      fontSize: 26,
       fontWeight: 'bold'
   },
   text: {

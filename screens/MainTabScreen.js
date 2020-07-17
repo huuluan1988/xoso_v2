@@ -19,7 +19,7 @@ const Tab = createMaterialBottomTabNavigator();
 
 const MainTabScreen = () => (
     <Tab.Navigator
-      initialRouteName="Settings"
+      initialRouteName="Home"
       activeColor="#fff"
     >
     

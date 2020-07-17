@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, Text, Button, StyleSheet } from 'react-native';
 
-const BookmarkScreen = () => {
+const History = () => {
     return (
       <View style={styles.container}>
         <Text>Bookmark Screen</Text>
@@ -13,7 +13,7 @@ const BookmarkScreen = () => {
     );
 };
 
-export default BookmarkScreen;
+export default History;
 
 const styles = StyleSheet.create({
   container: {
