@@ -1,17 +1,17 @@
 import React from 'react';
 import { View, Text, Button, StyleSheet } from 'react-native';
 
-const DetailsScreen = ({navigation}) => {
+const MienBacScreen = ({navigation}) => {
     return (
       <View style={styles.container}>
-        <Text>Details Screen</Text>
+        <Text>MienBac Screen</Text>
         <Button
             title="Go to details screen...again"
-            onPress={() => navigation.push("Details")}
+            onPress={() => navigation.push("MienBac")}
         />
         <Button
             title="Go to home"
-            onPress={() => navigation.navigate("Home")}
+            // onPress={() => navigation.navigate("Home")}
         />
         <Button
             title="Go back"
@@ -21,7 +21,7 @@ const DetailsScreen = ({navigation}) => {
     );
 };
 
-export default DetailsScreen;
+export default MienBacScreen;
 
 const styles = StyleSheet.create({
   container: {

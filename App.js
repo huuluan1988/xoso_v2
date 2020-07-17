@@ -14,7 +14,7 @@ import {
   DarkTheme as NavigationDarkTheme
 } from '@react-navigation/native';
 import { createDrawerNavigator } from '@react-navigation/drawer';
-
+import { createStackNavigator } from '@react-navigation/stack';
 import { 
   Provider as PaperProvider, 
   DefaultTheme as PaperDefaultTheme,
@@ -24,16 +24,21 @@ import {
 import { DrawerContent } from './screens/DrawerContent';
 
 import MainTabScreen from './screens/MainTabScreen';
-import SupportScreen from './screens/SupportScreen';
 import SettingsScreen from './screens/SettingsScreen';
-import History from './screens/History';
-
+import HistoryScreen from './screens/HistoryScreen';
+import ProfileScreen from './screens/ProfileScreen';
 import { AuthContext } from './components/context';
 
 import RootStackScreen from './screens/RootStackScreen';
 
 import AsyncStorage from '@react-native-community/async-storage';
 import firebase from 'react-native-firebase';
+import Icon from 'react-native-vector-icons/Ionicons';
+
+
+const ProfileStack = createStackNavigator();
+const HistoryStack = createStackNavigator();
+const SettingStack = createStackNavigator();
 const Drawer = createDrawerNavigator();
 
 const App = () => {
@@ -268,9 +273,9 @@ const App = () => {
       { loginState.userToken !== null ? (
         <Drawer.Navigator drawerContent={props => <DrawerContent {...props} />}>
           <Drawer.Screen name="HomeDrawer" component={MainTabScreen} />
-          <Drawer.Screen name="SupportScreen" component={SupportScreen} />
-          <Drawer.Screen name="SettingsScreen" component={SettingsScreen} />
-          <Drawer.Screen name="History" component={History} />
+          <Drawer.Screen name="Settings" component={SettingStackScreen} />
+          <Drawer.Screen name="History" component={HistoryStackScreen} />
+          <Drawer.Screen name="Profile" component={ProfileStackScreen} />
         </Drawer.Navigator>
       )
     :
@@ -283,3 +288,61 @@ const App = () => {
 }
 
 export default App;
+
+const ProfileStackScreen = ({navigation}) => (
+  <ProfileStack.Navigator screenOptions={{
+          headerStyle: {
+          backgroundColor: '#1f65ff',
+          },
+          headerTintColor: '#fff',
+          headerTitleStyle: {
+          fontWeight: 'bold'
+          }
+      }}>
+          <ProfileStack.Screen name="Profile" component={ProfileScreen} options={{
+          headerLeft: () => (
+              <Icon.Button name="ios-menu" size={25} backgroundColor="#1f65ff" onPress={() => navigation.openDrawer()}></Icon.Button>
+          )
+          }} />
+  </ProfileStack.Navigator>
+  
+  );
+
+
+  const HistoryStackScreen = ({navigation}) => (
+    <HistoryStack.Navigator screenOptions={{
+            headerStyle: {
+            backgroundColor: '#1f65ff',
+            },
+            headerTintColor: '#fff',
+            headerTitleStyle: {
+            fontWeight: 'bold'
+            }
+        }}>
+            <HistoryStack.Screen name="Lịch Sử" component={HistoryScreen} options={{
+            headerLeft: () => (
+                <Icon.Button name="ios-menu" size={25} backgroundColor="#1f65ff" onPress={() => navigation.openDrawer()}></Icon.Button>
+            )
+            }} />
+    </HistoryStack.Navigator>
+    
+    );
+
+    const SettingStackScreen = ({navigation}) => (
+      <SettingStack.Navigator screenOptions={{
+              headerStyle: {
+              backgroundColor: '#1f65ff',
+              },
+              headerTintColor: '#fff',
+              headerTitleStyle: {
+              fontWeight: 'bold'
+              }
+          }}>
+              <SettingStack.Screen name="Cài đặt" component={SettingsScreen} options={{
+              headerLeft: () => (
+                  <Icon.Button name="ios-menu" size={25} backgroundColor="#1f65ff" onPress={() => navigation.openDrawer()}></Icon.Button>
+              )
+              }} />
+      </SettingStack.Navigator>
+      
+      );

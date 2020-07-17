@@ -1,10 +1,10 @@
 import React from 'react';
 import { View, Text, Button, StyleSheet } from 'react-native';
 
-const History = () => {
+const MienTrungScreen = () => {
     return (
       <View style={styles.container}>
-        <Text>Bookmark Screen</Text>
+        <Text>Miền Trung Screen</Text>
         <Button
           title="Click Here"
           onPress={() => alert('Button Clicked!')}
@@ -13,7 +13,7 @@ const History = () => {
     );
 };
 
-export default History;
+export default MienTrungScreen;
 
 const styles = StyleSheet.create({
   container: {

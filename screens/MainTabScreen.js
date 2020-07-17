@@ -6,14 +6,17 @@ import { createStackNavigator } from '@react-navigation/stack';
 import Icon from 'react-native-vector-icons/Ionicons';
 
 import HomeScreen from './HomeScreen';
-import DetailsScreen from './DetailsScreen';
-import ExploreScreen from './ExploreScreen';
+import MienBacScreen from './MienBacScreen';
+import MienNamScreen from './MienNamScreen';
+import MienTrungScreen from './MienTrungScreen';
 import ProfileScreen from './ProfileScreen';
 import SettingsScreen from './SettingsScreen';
-
+import { View, Image, StyleSheet } from 'react-native';
 const HomeStack = createStackNavigator();
-const DetailsStack = createStackNavigator();
-const SettingsStack = createStackNavigator();
+const MienBacStack = createStackNavigator();
+const MienNamStack = createStackNavigator();
+const MienTrungStack = createStackNavigator();
+const ProfileStack = createStackNavigator();
 
 const Tab = createMaterialBottomTabNavigator();
 
@@ -29,16 +32,14 @@ const MainTabScreen = () => (
         options={{
           tabBarLabel: 'Home',
           tabBarColor: '#009387',
-          tabBarIcon: ({ color }) => (
-            <Icon name="ios-home" color={color} size={26} />
-          ),
+          textAlign : "center"
         }}
       />
       <Tab.Screen
-        name="Notifications"
-        component={DetailsStackScreen}
+        name="MienBac"
+        component={MienBacStackScreen}
         options={{
-          tabBarLabel: 'Updates',
+          tabBarLabel: 'Miền Bắc',
           tabBarColor: '#1f65ff',
           tabBarIcon: ({ color }) => (
             <Icon name="ios-notifications" color={color} size={26} />
@@ -46,38 +47,28 @@ const MainTabScreen = () => (
         }}
       />
       <Tab.Screen
-        name="Profile"
-        component={ProfileScreen}
+        name="MienNam"
+        component={MienNamStackScreen}
         options={{
-          tabBarLabel: 'Profile',
-          tabBarColor: '#694fad',
-          tabBarIcon: ({ color }) => (
-            <Icon name="ios-person" color={color} size={26} />
-          ),
-        }}
-      />
-      <Tab.Screen
-        name="Settings"
-        component={SettingsStackScreen}
-        options={{
-          tabBarLabel: 'Settings',
-          tabBarColor: '#694fad',
-          tabBarIcon: ({ color }) => (
-            <Icon name="ios-person" color={color} size={26} />
-          ),
-        }}
-      />
-      <Tab.Screen
-        name="Explore"
-        component={ExploreScreen}
-        options={{
-          tabBarLabel: 'Explore',
+          tabBarLabel: 'Miền Nam',
           tabBarColor: '#d02860',
           tabBarIcon: ({ color }) => (
             <Icon name="ios-aperture" color={color} size={26} />
           ),
         }}
       />
+      <Tab.Screen
+        name="MienTrung"
+        component={MienTrungStackScreen}
+        options={{
+          tabBarLabel: 'Miền Trung',
+          tabBarColor: '#d02860',
+          tabBarIcon: ({ color }) => (
+            <Icon name="ios-aperture" color={color} size={26} />
+          ),
+        }}
+      />
+      
     </Tab.Navigator>
 );
 
@@ -90,11 +81,12 @@ const HomeStackScreen = ({navigation}) => (
         },
         headerTintColor: '#fff',
         headerTitleStyle: {
-        fontWeight: 'bold'
+        fontWeight: 'bold',
+        fontSize: 15,
         }
     }}>
-        <HomeStack.Screen name="Home" component={HomeScreen} options={{
-        title:'Overview',
+        <HomeStack.Screen name="Home"  component={HomeScreen} options={{
+        title:'Xổ Số Lô Đề Nhanh',
         headerLeft: () => (
             <Icon.Button name="ios-menu" size={25} backgroundColor="#009387" onPress={() => navigation.openDrawer()}></Icon.Button>
         )
@@ -102,8 +94,8 @@ const HomeStackScreen = ({navigation}) => (
 </HomeStack.Navigator>
 );
 
-const DetailsStackScreen = ({navigation}) => (
-<DetailsStack.Navigator screenOptions={{
+const MienBacStackScreen = ({navigation}) => (
+<MienBacStack.Navigator screenOptions={{
         headerStyle: {
         backgroundColor: '#1f65ff',
         },
@@ -112,16 +104,34 @@ const DetailsStackScreen = ({navigation}) => (
         fontWeight: 'bold'
         }
     }}>
-        <DetailsStack.Screen name="Details" component={DetailsScreen} options={{
+        <MienBacStack.Screen name="Miền Bắc" component={MienBacScreen} options={{
         headerLeft: () => (
             <Icon.Button name="ios-menu" size={25} backgroundColor="#1f65ff" onPress={() => navigation.openDrawer()}></Icon.Button>
         )
         }} />
-</DetailsStack.Navigator>
+</MienBacStack.Navigator>
 );
-  
-const SettingsStackScreen = ({navigation}) => (
-<SettingsStack.Navigator screenOptions={{
+
+const MienNamStackScreen = ({navigation}) => (
+  <MienNamStack.Navigator screenOptions={{
+          headerStyle: {
+          backgroundColor: '#1f65ff',
+          },
+          headerTintColor: '#fff',
+          headerTitleStyle: {
+          fontWeight: 'bold'
+          }
+      }}>
+          <MienNamStack.Screen name="Miền Nam" component={MienNamScreen} options={{
+          headerLeft: () => (
+              <Icon.Button name="ios-menu" size={25} backgroundColor="#1f65ff" onPress={() => navigation.openDrawer()}></Icon.Button>
+          )
+          }} />
+  </MienNamStack.Navigator>
+  );
+
+const MienTrungStackScreen = ({navigation}) => (
+<MienTrungStack.Navigator screenOptions={{
         headerStyle: {
         backgroundColor: '#1f65ff',
         },
@@ -130,11 +140,14 @@ const SettingsStackScreen = ({navigation}) => (
         fontWeight: 'bold'
         }
     }}>
-        <SettingsStack.Screen name="Settings" component={SettingsScreen} options={{
+        <MienTrungStack.Screen name="Miền Trung" component={MienTrungScreen} options={{
         headerLeft: () => (
             <Icon.Button name="ios-menu" size={25} backgroundColor="#1f65ff" onPress={() => navigation.openDrawer()}></Icon.Button>
         )
         }} />
-</SettingsStack.Navigator>
+</MienTrungStack.Navigator>
+
 );
-  
+
+
+    
