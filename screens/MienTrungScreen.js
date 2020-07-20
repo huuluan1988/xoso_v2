@@ -1,15 +1,20 @@
 import React from 'react';
 import { View, Text, Button, StyleSheet } from 'react-native';
+import { WebView } from 'react-native-webview';
 
 const MienTrungScreen = () => {
     return (
-      <View style={styles.container}>
-        <Text>Miền Trung Screen</Text>
-        <Button
-          title="Click Here"
-          onPress={() => alert('Button Clicked!')}
-        />
-      </View>
+      <View style={{ flex: 1 }}>
+        
+          <WebView
+                source={{
+                  uri: 'https://nhocbi.com/xoso/mientrung',
+                  baseUrl: '',
+                }}
+                startInLoadingState={true}
+
+              />
+          </View>
     );
 };
 

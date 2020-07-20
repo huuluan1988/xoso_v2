@@ -32,7 +32,9 @@ const MainTabScreen = () => (
         options={{
           tabBarLabel: 'Home',
           tabBarColor: '#009387',
-          textAlign : "center"
+          tabBarIcon: ({ color }) => (
+            <Icon name="ios-home" color={color} size={26} />
+          ),
         }}
       />
       <Tab.Screen
