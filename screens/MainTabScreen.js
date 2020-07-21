@@ -1,5 +1,5 @@
 import React from 'react';
-
+import { View, Image, StyleSheet } from 'react-native';
 import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
 import { createStackNavigator } from '@react-navigation/stack';
 
@@ -11,12 +11,13 @@ import MienNamScreen from './MienNamScreen';
 import MienTrungScreen from './MienTrungScreen';
 import ProfileScreen from './ProfileScreen';
 import SettingsScreen from './SettingsScreen';
-import { View, Image, StyleSheet } from 'react-native';
+import EditProfileScreen from './EditProfileScreen';
+
+
 const HomeStack = createStackNavigator();
 const MienBacStack = createStackNavigator();
 const MienNamStack = createStackNavigator();
 const MienTrungStack = createStackNavigator();
-const ProfileStack = createStackNavigator();
 
 const Tab = createMaterialBottomTabNavigator();
 

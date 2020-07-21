@@ -27,14 +27,17 @@ import MainTabScreen from './screens/MainTabScreen';
 import SettingsScreen from './screens/SettingsScreen';
 import HistoryScreen from './screens/HistoryScreen';
 import ProfileScreen from './screens/ProfileScreen';
-import { AuthContext } from './components/context';
-
+import EditProfileScreen from './screens/EditProfileScreen';
 import RootStackScreen from './screens/RootStackScreen';
+
+import { AuthContext } from './components/context';
 
 import AsyncStorage from '@react-native-community/async-storage';
 import firebase from 'react-native-firebase';
 import Icon from 'react-native-vector-icons/Ionicons';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
+import {useTheme} from 'react-native-paper';
 
 const ProfileStack = createStackNavigator();
 const HistoryStack = createStackNavigator();
@@ -289,26 +292,6 @@ const App = () => {
 
 export default App;
 
-const ProfileStackScreen = ({navigation}) => (
-  <ProfileStack.Navigator screenOptions={{
-          headerStyle: {
-          backgroundColor: '#1f65ff',
-          },
-          headerTintColor: '#fff',
-          headerTitleStyle: {
-          fontWeight: 'bold'
-          }
-      }}>
-          <ProfileStack.Screen name="Profile" component={ProfileScreen} options={{
-          headerLeft: () => (
-              <Icon.Button name="ios-menu" size={25} backgroundColor="#1f65ff" onPress={() => navigation.openDrawer()}></Icon.Button>
-          )
-          }} />
-  </ProfileStack.Navigator>
-  
-  );
-
-
   const HistoryStackScreen = ({navigation}) => (
     <HistoryStack.Navigator screenOptions={{
             headerStyle: {
@@ -345,4 +328,57 @@ const ProfileStackScreen = ({navigation}) => (
               }} />
       </SettingStack.Navigator>
       
-      );
+    );
+
+    const ProfileStackScreen = ({navigation}) => {
+      const {colors} = useTheme();
+    
+      return (
+      <ProfileStack.Navigator
+        screenOptions={{
+          headerStyle: {
+            backgroundColor: colors.background,
+            shadowColor: colors.background, // iOS
+            elevation: 0, // Android
+          },
+          headerTintColor: colors.text,
+        }}>
+        <ProfileStack.Screen
+          name="Profile"
+          component={ProfileScreen}
+          options={{
+            title: '',
+            headerLeft: () => (
+              <View style={{marginLeft:10}}>
+                <Icon.Button
+                  name="ios-menu"
+                  size={25}
+                  backgroundColor= {colors.background}
+                  color={colors.text}
+                  onPress={() => navigation.openDrawer()}
+                />
+              </View>
+            ),
+            headerRight: () => (
+              <View style={{marginRight:10}}>
+                <MaterialCommunityIcons.Button
+                  name="account-edit"
+                  size={25}
+                  backgroundColor= {colors.background}
+                  color={colors.text}
+                  onPress={() => navigation.navigate('EditProfile')}
+                />
+              </View>
+            ),
+          }}
+        />
+        <ProfileStack.Screen 
+          name="EditProfile"
+          options={{
+            title: 'Edit Profile'
+          }}
+          component={EditProfileScreen}
+        />
+      </ProfileStack.Navigator>
+    
+    )};
