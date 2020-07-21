@@ -7,16 +7,15 @@ import {
     Caption,
     Paragraph,
     Drawer,
-    Text,
-    TouchableRipple,
-    Switch
+    TouchableRipple
 } from 'react-native-paper';
+import { Container, Header, Content, Button, ListItem, Text, Icon, Left, Body, Right, Switch } from 'native-base';
 import {
     DrawerContentScrollView,
     DrawerItem
 } from '@react-navigation/drawer';
 
-import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+// import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 import{ AuthContext } from '../components/context';
 
@@ -55,7 +54,26 @@ export function DrawerContent(props) {
                             </View>
                         </View>
                     </View>
-
+                    <Container>
+                        <Content>
+                        <ListItem icon
+                        onPress={() => {props.navigation.navigate('Home')}}
+                        >
+                            <Left>
+                            <Button style={{ backgroundColor: "#007AFF" }}>
+                                <Icon active name="bluetooth" />
+                            </Button>
+                            </Left>
+                            <Body>
+                            <Text>Bluetooth</Text>
+                            </Body>
+                            <Right>
+                            <Text>On</Text>
+                                <Icon active name="arrow-forward" />
+                            </Right>
+                        </ListItem>
+                        </Content>
+                    </Container>
                     <Drawer.Section style={styles.drawerSection}>
                         <DrawerItem 
                             icon={({color, size}) => (
