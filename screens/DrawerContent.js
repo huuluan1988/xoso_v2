@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState, useEffect}from 'react';
 import { View, StyleSheet } from 'react-native';
 import {
     useTheme,
@@ -14,7 +14,7 @@ import {
     DrawerContentScrollView,
     DrawerItem
 } from '@react-navigation/drawer';
-
+import AsyncStorage from '@react-native-community/async-storage';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 import { AuthContext } from '../components/context';
@@ -25,6 +25,22 @@ export function DrawerContent(props) {
 
     const { signOut, toggleTheme } = React.useContext(AuthContext);
 
+
+    const [imageAvata, setAvata] = useState('https://nhocbi.com/public/static/templates/frontend/xoso/logo.png');
+
+    useEffect(() => {
+        
+        getImgAvata();
+
+    }, []);
+
+    const getImgAvata = async() => {
+        let imageAvata = await AsyncStorage.getItem('imageAvata');
+        console.log('luan111', imageAvata);
+        setAvata(imageAvata)
+    }
+
+
     return (
         <View style={{ flex: 1 }}>
             <DrawerContentScrollView {...props}>
@@ -33,7 +49,7 @@ export function DrawerContent(props) {
                         <View style={{ flexDirection: 'row', marginTop: 15 }}>
                             <Avatar.Image
                                 source={{
-                                    uri: 'https://api.adorable.io/avatars/50/abott@adorable.png'
+                                    uri: imageAvata
                                 }}
                                 size={50}
                             />

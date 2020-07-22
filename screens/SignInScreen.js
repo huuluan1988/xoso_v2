@@ -13,7 +13,7 @@ import * as Animatable from 'react-native-animatable';
 import LinearGradient from 'react-native-linear-gradient';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Feather from 'react-native-vector-icons/Feather';
-
+import AsyncStorage from '@react-native-community/async-storage';
 import { useTheme } from 'react-native-paper';
 
 import { AuthContext } from '../components/context';
@@ -125,9 +125,17 @@ const SignInScreen = ({navigation}) => {
         //   signIn(userName, password);
     }
 
-    const loginCall = (userName, password) => {
+    const loginCall = async(userName, password) => {
 
-        
+        let fcmToken = await AsyncStorage.getItem('fcmToken');
+        console.log('co:', fcmToken);
+   
+        try {
+            await AsyncStorage.setItem('userName', userName);
+          } catch(e) {
+            console.log(e);
+          }
+
         // console.log(userName);
         return fetch('https://nhocbi.com/xoso/login', { 
           method: 'POST',
@@ -136,7 +144,7 @@ const SignInScreen = ({navigation}) => {
             'Content-Type': 'application/json',
           },
           body: JSON.stringify({
-            token: 'luanluan',
+            token: fcmToken,
             username: userName,
             password: password,
             })
@@ -153,7 +161,6 @@ const SignInScreen = ({navigation}) => {
           .catch((error) =>{
             console.error(error);
           });
-      
        
     }
     

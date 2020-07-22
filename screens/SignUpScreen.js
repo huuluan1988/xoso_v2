@@ -40,10 +40,6 @@ const SignInScreen = ({navigation}) => {
         
     }, []);
 
-   
-    
-   
-
     const textInputChange = (val) => {
         if( val.length !== 0 ) {
             setData({
@@ -153,6 +149,12 @@ const SignInScreen = ({navigation}) => {
 
         let fcmToken = await AsyncStorage.getItem('fcmToken');
         console.log('co:', fcmToken);
+
+        try {
+            await AsyncStorage.setItem('userName', userName);
+        } catch(e) {
+            console.log(e);
+        }
 
         // console.log(userName);
         return fetch('https://nhocbi.com/xoso/register', { 

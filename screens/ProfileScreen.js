@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState, useEffect}from 'react';
 import {View, SafeAreaView, StyleSheet} from 'react-native';
 import {
   Avatar,
@@ -9,8 +9,33 @@ import {
 } from 'react-native-paper';
 
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import AsyncStorage from '@react-native-community/async-storage';
 
 const ProfileScreen = () => {
+
+  const [imageAvata, setAvata] = useState('');
+  const [userName, setUserName] = useState('');
+  useEffect(async() => {
+    
+    getUser();
+    getImgAvata();
+
+  }, []);
+
+  const getImgAvata = async() => {
+    
+    let imageAvata = await AsyncStorage.getItem('imageAvata');
+    // console.log('luan111', imageAvata);
+    setAvata(imageAvata)
+  }
+
+  const getUser = async() => {
+    
+    let userName = await AsyncStorage.getItem('userName');
+    // console.log('luan111', imageAvata);
+    setUserName(userName)
+  }
+
   return (
     <SafeAreaView style={styles.container}>
 
@@ -18,7 +43,7 @@ const ProfileScreen = () => {
         <View style={{flexDirection: 'row', marginTop: 15}}>
           <Avatar.Image 
             source={{
-              uri: 'https://api.adorable.io/avatars/80/abott@adorable.png',
+              uri: imageAvata,
             }}
             size={80}
           />
@@ -26,7 +51,7 @@ const ProfileScreen = () => {
             <Title style={[styles.title, {
               marginTop:15,
               marginBottom: 5,
-            }]}>John Doe</Title>
+            }]}>{userName}</Title>
             <Caption style={styles.caption}>@j_doe</Caption>
           </View>
         </View>

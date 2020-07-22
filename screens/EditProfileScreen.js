@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {
   View,
   Text,
@@ -13,18 +13,62 @@ import {useTheme} from 'react-native-paper';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Feather from 'react-native-vector-icons/Feather';
-
+import AsyncStorage from '@react-native-community/async-storage';
 import BottomSheet from 'reanimated-bottom-sheet';
 import Animated from 'react-native-reanimated';
 
 import ImagePicker from 'react-native-image-crop-picker';
-import AsyncStorage from '@react-native-community/async-storage';
+
 const EditProfileScreen = () => {
 
   const [image, setImage] = useState('https://api.adorable.io/avatars/80/abott@adorable.png');
+  const [imageAvata, setAvata] = useState('');
   const {colors} = useTheme();
 
-  const takePhotoFromCamera = async() => {
+  const [data, setData] = React.useState({
+    fullname: '',
+    city: '',
+    check_textInputChange: false,
+    secureTextEntry: true,
+    confirm_secureTextEntry: true,
+});
+
+const textFullNameChange = (val) => {
+    if( val.length !== 0 ) {
+        setData({
+            ...data,
+            fullname: val,
+            check_textInputChange: true,
+            isValidUser: true
+        });
+    } else {
+        setData({
+            ...data,
+            fullname: val,
+            check_textInputChange: false,
+            isValidUser: false
+        });
+    }
+}
+const textCityChange = (val) => {
+    if( val.length !== 0 ) {
+        setData({
+            ...data,
+            city: val,
+            check_textInputChange: true,
+            isValidUser: true
+        });
+    } else {
+        setData({
+            ...data,
+            city: val,
+            check_textInputChange: false,
+            isValidUser: false
+        });
+    }
+}
+
+  const takePhotoFromCamera = () => {
     ImagePicker.openCamera({
       compressImageMaxWidth: 300,
       compressImageMaxHeight: 300,
@@ -32,14 +76,13 @@ const EditProfileScreen = () => {
       compressImageQuality: 0.7
     }).then(image => {
       console.log(image);
-      
-
       setImage(image.path);
+      setAvata(image.path);
       this.bs.current.snapTo(1);
     });
   }
 
-  const choosePhotoFromLibrary = async() => {
+  const choosePhotoFromLibrary = () => {
     ImagePicker.openPicker({
       width: 300,
       height: 300,
@@ -47,14 +90,33 @@ const EditProfileScreen = () => {
       compressImageQuality: 0.7
     }).then(image => {
       console.log(image);
-
-    //   await AsyncStorage.setItem('imageAvata', image);
-    //   console.log('lol1',imageAvata);
-
       setImage(image.path);
+      setAvata(image.path);
       this.bs.current.snapTo(1);
     });
   }
+
+  useEffect(() => {
+   
+    getUserName()
+    getImgAvata();
+
+  }, []);
+
+  const getImgAvata = async() => {
+    
+    let imageAvata = await AsyncStorage.getItem('imageAvata');
+    console.log('luan222', imageAvata);
+    setAvata(imageAvata)
+  }
+
+
+  const getUserName = async() => {
+    
+    let userName = await AsyncStorage.getItem('userName');
+    console.log('luan55', userName);
+  }
+
 
   renderInner = () => (
     <View style={styles.panel}>
@@ -83,6 +145,42 @@ const EditProfileScreen = () => {
       </View>
     </View>
   );
+
+  const saveProfile = async(fullname, city) => {
+    try {
+        await AsyncStorage.setItem('imageAvata', image);
+      } catch(e) {
+        console.log(e);
+    }
+
+    let userName = await AsyncStorage.getItem('userName');
+
+    return fetch('https://nhocbi.com/xoso/user', { 
+        method: 'POST',
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+            username: userName,
+            fullname: fullname,
+            city: city,
+          })
+        })
+        .then((response) => response.json())
+        .then((responseJson) => {
+          if(responseJson.Code == 1) {
+            console.log(responseJson);
+          } else {
+              console.log(responseJson);
+          }
+        })
+        .catch((error) =>{
+          console.error(error);
+        });
+    
+
+  };
 
   bs = React.createRef();
   fall = new Animated.Value(1);
@@ -113,7 +211,7 @@ const EditProfileScreen = () => {
               }}>
               <ImageBackground
                 source={{
-                  uri: image,
+                  uri: imageAvata,
                 }}
                 style={{height: 100, width: 100}}
                 imageStyle={{borderRadius: 15}}>
@@ -151,64 +249,7 @@ const EditProfileScreen = () => {
             placeholder="First Name"
             placeholderTextColor="#666666"
             autoCorrect={false}
-            style={[
-              styles.textInput,
-              {
-                color: colors.text,
-              },
-            ]}
-          />
-        </View>
-        <View style={styles.action}>
-          <FontAwesome name="user-o" color={colors.text} size={20} />
-          <TextInput
-            placeholder="Last Name"
-            placeholderTextColor="#666666"
-            autoCorrect={false}
-            style={[
-              styles.textInput,
-              {
-                color: colors.text,
-              },
-            ]}
-          />
-        </View>
-        <View style={styles.action}>
-          <Feather name="phone" color={colors.text} size={20} />
-          <TextInput
-            placeholder="Phone"
-            placeholderTextColor="#666666"
-            keyboardType="number-pad"
-            autoCorrect={false}
-            style={[
-              styles.textInput,
-              {
-                color: colors.text,
-              },
-            ]}
-          />
-        </View>
-        <View style={styles.action}>
-          <FontAwesome name="envelope-o" color={colors.text} size={20} />
-          <TextInput
-            placeholder="Email"
-            placeholderTextColor="#666666"
-            keyboardType="email-address"
-            autoCorrect={false}
-            style={[
-              styles.textInput,
-              {
-                color: colors.text,
-              },
-            ]}
-          />
-        </View>
-        <View style={styles.action}>
-          <FontAwesome name="globe" color={colors.text} size={20} />
-          <TextInput
-            placeholder="Country"
-            placeholderTextColor="#666666"
-            autoCorrect={false}
+            onChangeText={(val) => textFullNameChange(val)}
             style={[
               styles.textInput,
               {
@@ -220,9 +261,10 @@ const EditProfileScreen = () => {
         <View style={styles.action}>
           <Icon name="map-marker-outline" color={colors.text} size={20} />
           <TextInput
-            placeholder="City"
+            placeholder="Thành Phó"
             placeholderTextColor="#666666"
             autoCorrect={false}
+            onChangeText={(val) => textCityChange(val)}
             style={[
               styles.textInput,
               {
@@ -231,7 +273,7 @@ const EditProfileScreen = () => {
             ]}
           />
         </View>
-        <TouchableOpacity style={styles.commandButton} onPress={() => {}}>
+        <TouchableOpacity style={styles.commandButton} onPress={() => {saveProfile(data.fullname, data.city)}}>
           <Text style={styles.panelButtonTitle}>Submit</Text>
         </TouchableOpacity>
       </Animated.View>
