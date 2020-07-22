@@ -112,7 +112,6 @@ const textCityChange = (val) => {
 
 
   const getUserName = async() => {
-    
     let userName = await AsyncStorage.getItem('userName');
     console.log('luan55', userName);
   }
@@ -211,7 +210,7 @@ const textCityChange = (val) => {
               }}>
               <ImageBackground
                 source={{
-                  uri: imageAvata,
+                  uri: image,
                 }}
                 style={{height: 100, width: 100}}
                 imageStyle={{borderRadius: 15}}>

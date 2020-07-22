@@ -30,9 +30,7 @@ const ProfileScreen = () => {
   }
 
   const getUser = async() => {
-    
     let userName = await AsyncStorage.getItem('userName');
-    // console.log('luan111', imageAvata);
     setUserName(userName)
   }
 
@@ -52,7 +50,7 @@ const ProfileScreen = () => {
               marginTop:15,
               marginBottom: 5,
             }]}>{userName}</Title>
-            <Caption style={styles.caption}>@j_doe</Caption>
+            <Caption style={styles.caption}>{userName}</Caption>
           </View>
         </View>
       </View>
@@ -86,7 +84,7 @@ const ProfileScreen = () => {
           </View>
       </View>
 
-      <View style={styles.menuWrapper}>
+      {/* <View style={styles.menuWrapper}>
         <TouchableRipple onPress={() => {}}>
           <View style={styles.menuItem}>
             <Icon name="heart-outline" color="#FF6347" size={25}/>
@@ -117,7 +115,7 @@ const ProfileScreen = () => {
             <Text style={styles.menuItemText}>Settings</Text>
           </View>
         </TouchableRipple>
-      </View>
+      </View> */}
     </SafeAreaView>
   );
 };
