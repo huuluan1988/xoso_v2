@@ -1,3 +1,5 @@
+// https://www.youtube.com/watch?v=-40TBdSRk6E
+https://topdev.vn/blog/su-dung-usereducer-va-usecontext-de-lam-global-state/
 import React, {useState, useEffect} from 'react';
 import {
   View,
@@ -21,7 +23,7 @@ import ImagePicker from 'react-native-image-crop-picker';
 
 const EditProfileScreen = () => {
 
-  const [image, setImage] = useState('https://api.adorable.io/avatars/80/abott@adorable.png');
+  const [image, setImage] = useState('https://nhocbi.com/public/static/templates/frontend/xoso/logo.png');
   const [imageAvata, setAvata] = useState('');
   const {colors} = useTheme();
 
@@ -97,7 +99,7 @@ const textCityChange = (val) => {
   }
 
   useEffect(() => {
-   
+    console.log(colors);
     getUserName()
     getImgAvata();
 
@@ -210,7 +212,7 @@ const textCityChange = (val) => {
               }}>
               <ImageBackground
                 source={{
-                  uri: image,
+                  uri: imageAvata? imageAvata: image,
                 }}
                 style={{height: 100, width: 100}}
                 imageStyle={{borderRadius: 15}}>
