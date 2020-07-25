@@ -21,7 +21,7 @@ const Item = ({somoinhat, dai}) => {
   );
 };
 
-const ItemField = ({icon, title, desc, tyle, link}) => {
+const ItemField = ({icon, title, total_du_doan, total_du_doan_trung, link}) => {
   const navigation = useNavigation();
   return (
     <Button onPress={() => {
@@ -41,8 +41,8 @@ const ItemField = ({icon, title, desc, tyle, link}) => {
           <TextView size={16} bold>
             {title}
           </TextView>
-          {/* <TextView style={styles.textDesc}>Tỷ : {desc}</TextView> */}
-          <TextView style={styles.textDesc}>Tỷ lệ trúng: {tyle}</TextView>
+          <TextView style={styles.textDesc}>Số lần dự đoán : {total_du_doan}</TextView>
+          <TextView style={styles.textDesc}>Tỷ lệ trúng: {((total_du_doan_trung * 100) / total_du_doan).toFixed(2)} %</TextView>
         </Block>
         <Button style={styles.btn}>
           <Feather name="chevron-right" color={Colors.blue} size={30} />
@@ -55,19 +55,55 @@ const ItemField = ({icon, title, desc, tyle, link}) => {
 const HomeScreen = (navigate) => {
 
   const [dataSource, setDataSource] = useState([]);
+  const [totalDuDoan, setTotalDuDoan] = useState(0);
+  const [totalDuDoanTrung, setTotalDuDoanTrung] = useState(0);
+  const [userName, setUserName] = useState('');
   useEffect(() => {
     load();
-
+    loadTyleĐuoan();
+    getUser();
   }, []);
 
+  const getUser = async() => {
+    let userName = await AsyncStorage.getItem('userName');
+    setUserName(userName)
+  }
+
   const load = () => {
-    fetch("https://nhocbi.com/tienganh/category_effortlessenglish_v3/json_category_effortlessenglish", {
+    fetch("http://nhocbi.com/xoso/list_so_dudoan" + '?username=' + userName, {
       headers: {
         "X-Requested-With": "XMLHttpRequest"
       }
     }).then(res => res.json())
       .then(data => {
-        setDataSource(data);
+        if(data == ''){
+          setDataSource();
+        } else {
+          setDataSource(data);
+        };
+        
+      });
+  }
+
+  const loadTyleĐuoan = () => {
+    fetch("http://nhocbi.com/xoso/tyle_du_doan" + '?username=' + userName, {
+      headers: {
+        "X-Requested-With": "XMLHttpRequest"
+      }
+    }).then(res => res.json())
+      .then(data => {
+        if(data == ''){
+          setTotalDuDoan(0);
+          setTotalDuDoanTrung(0);
+        } else {
+          data.map(a=>{
+            console.log(a.tong_du_doan_trung.length)
+            setTotalDuDoan(a.tong_dudoan.length);
+            setTotalDuDoanTrung(a.tong_du_doan_trung.length);
+         })
+        };
+
+        
       });
   }
 
@@ -87,20 +123,19 @@ const HomeScreen = (navigate) => {
         </Block> */}
         
         <Block padding={10}>
-          <TextView h6>Số dự đoán hôm nay</TextView>
+          <TextView h6>Số dự đoán hôm nay:</TextView>
           <Block direction="row" paddingVertical={10}>
-          <ScrollView>
+          {dataSource ?  <ScrollView>
             <FlatList
               data={dataSource}
               horizontal
               renderItem={({ item }) => (
                 <View>
-                  <Item somoinhat={item.image_width} dai={item.word}/>
+                  <Item somoinhat={item.so_dudoan} dai={item.dai_dudoan_text}/>
                 </View>
               )}
             />
-
-          </ScrollView>
+          </ScrollView> : <TextView >Bạn chưa tham gia dự đoán ngày hôm nay!</TextView> }
             {/* <Item somoinhat="3/8" dai="Miền Bắc" />
             <Block width={10} />
             <Item somoinhat="09856" dai="Miền Bắc" />
@@ -114,25 +149,24 @@ const HomeScreen = (navigate) => {
           <TextView h6>Xổ Số 3 Miền</TextView>
           <Block>
             <ItemField
-            
               title="Miền Bắc"
-              desc="12"
-              tyle="30%"
+              total_du_doan={totalDuDoan}
+              total_du_doan_trung={totalDuDoanTrung}
               link="MienBac"
               navigate='navigate'
               icon={require('../assets/img-bac.jpg')}
             />
             <ItemField
               title="Miền Nam"
-              desc="12"
-              tyle="30%"
+              total_du_doan={totalDuDoan}
+              total_du_doan_trung={totalDuDoanTrung}
               link="MienNam"
               icon={require('../assets/img-nam.jpg')}
             />
             <ItemField
               title="Miền Trung"
-              desc="12"
-              tyle="30%"
+              total_du_doan={totalDuDoan}
+              total_du_doan_trung={totalDuDoanTrung}
               link="MienTrung"
 
               icon={require('../assets/img-trung.jpg')}
@@ -194,14 +228,14 @@ const styles = StyleSheet.create({
   field_con: {
     // marginLeft: W / 2,
     position: 'absolute',
-    width: (2 * W) / 5,
+    width: (2 * W),
     left: W / 3 + 10,
     top: 10,
     paddingVertical: 10,
   },
   textDesc: {
-    lineHeight: 20,
-    marginTop: 10,
+    lineHeight: 15,
+    marginTop: 5,
     maxWidth: (2 * W) / 3.4,
   },
   btn: {

@@ -1,22 +1,29 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, Text, Button, StyleSheet } from 'react-native';
-
+import { WebView } from 'react-native-webview';
 const MienBacScreen = ({navigation}) => {
+
+  const [userName, setUserName] = useState('');
+
+  useEffect(() => {
+    getUser();
+  }, []);
+
+  const getUser = async() => {
+    let userName = await AsyncStorage.getItem('userName');
+    setUserName(userName)
+  }
+
     return (
-      <View style={styles.container}>
-        <Text>MienBac Screen</Text>
-        <Button
-            title="Go to details screen...again"
-            onPress={() => navigation.push("MienBac")}
-        />
-        <Button
-            title="Go to home"
-            // onPress={() => navigation.navigate("Home")}
-        />
-        <Button
-            title="Go back"
-            onPress={() => navigation.goBack()}
-        />
+      <View style={{ flex: 1 }}>
+        <WebView
+              source={{
+                uri: 'https://nhocbi.com/xoso/mienbac' + '?username=' + userName,
+                baseUrl: '',
+              }}
+              startInLoadingState={true}
+
+            />
       </View>
     );
 };

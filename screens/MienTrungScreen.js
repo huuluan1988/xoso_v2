@@ -5,16 +5,15 @@ import { WebView } from 'react-native-webview';
 const MienTrungScreen = () => {
     return (
       <View style={{ flex: 1 }}>
-        
-          <WebView
-                source={{
-                  uri: 'https://nhocbi.com/xoso/mientrung',
-                  baseUrl: '',
-                }}
-                startInLoadingState={true}
+        <WebView
+              source={{
+                uri: 'https://nhocbi.com/xoso/mientrung',
+                baseUrl: '',
+              }}
+              startInLoadingState={true}
 
-              />
-          </View>
+            />
+      </View>
     );
 };
 
