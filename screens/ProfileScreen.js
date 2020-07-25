@@ -58,15 +58,15 @@ const ProfileScreen = () => {
       <View style={styles.userInfoSection}>
         <View style={styles.row}>
           <Icon name="map-marker-radius" color="#777777" size={20}/>
-          <Text style={{color:"#777777", marginLeft: 20}}>Kolkata, India</Text>
+          <Text style={{color:"#777777", marginLeft: 20}}>Huu Luân</Text>
         </View>
         <View style={styles.row}>
           <Icon name="phone" color="#777777" size={20}/>
-          <Text style={{color:"#777777", marginLeft: 20}}>+91-900000009</Text>
+          <Text style={{color:"#777777", marginLeft: 20}}>+0988585821</Text>
         </View>
         <View style={styles.row}>
           <Icon name="email" color="#777777" size={20}/>
-          <Text style={{color:"#777777", marginLeft: 20}}>john_doe@email.com</Text>
+          <Text style={{color:"#777777", marginLeft: 20}}>Huế</Text>
         </View>
       </View>
 

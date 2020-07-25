@@ -1,5 +1,5 @@
 // https://www.youtube.com/watch?v=-40TBdSRk6E
-https://topdev.vn/blog/su-dung-usereducer-va-usecontext-de-lam-global-state/
+// https://topdev.vn/blog/su-dung-usereducer-va-usecontext-de-lam-global-state/
 import React, {useState, useEffect} from 'react';
 import {
   View,
