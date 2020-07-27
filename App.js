@@ -6,7 +6,7 @@
  * @flow
  */
 
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, ActivityIndicator } from 'react-native';
 import { 
   NavigationContainer, 
@@ -31,6 +31,7 @@ import EditProfileScreen from './screens/EditProfileScreen';
 import RootStackScreen from './screens/RootStackScreen';
 
 import { AuthContext } from './components/context';
+import { MyContext } from './components/mycontext';
 
 import AsyncStorage from '@react-native-community/async-storage';
 import firebase from 'react-native-firebase';
@@ -43,13 +44,12 @@ const ProfileStack = createStackNavigator();
 const HistoryStack = createStackNavigator();
 const SettingStack = createStackNavigator();
 const Drawer = createDrawerNavigator();
-
 const App = () => {
   // const [isLoading, setIsLoading] = React.useState(true);
   // const [userToken, setUserToken] = React.useState(null); 
 
   const [isDarkTheme, setIsDarkTheme] = React.useState(false);
-
+  const [theme1, setTheme] = useState('Light');
   const initialLoginState = {
     isLoading: true,
     userName: null,
@@ -113,7 +113,8 @@ const App = () => {
   };
 
   const [loginState, dispatch] = React.useReducer(loginReducer, initialLoginState);
-
+  const [value, setValue] = React.useState("foo");
+  const [value2, setValue2] = React.useState("");
   const authContext = React.useMemo(() => ({
     signIn: async(foundUser) => {
       // setUserToken('fgkj');
@@ -145,7 +146,13 @@ const App = () => {
     },
     toggleTheme: () => {
       setIsDarkTheme( isDarkTheme => !isDarkTheme );
-    }
+    },
+
+    textmo: async(v) => {
+      setValue2(v);
+      // alert('aaaa');
+    },
+
   }), []);
 
   useEffect(() => {
@@ -158,9 +165,17 @@ const App = () => {
       } catch(e) {
         console.log(e);
       }
+
+      try {
+        imageAvata = await AsyncStorage.getItem('imageAvata');
+        setValue2(imageAvata);
+      } catch(e) {
+        console.log(e);
+      }
+      
       // console.log('user token: ', userToken);
       dispatch({ type: 'RETRIEVE_TOKEN', token: userToken });
-    }, 1000);
+    }, 100);
     checkPermission();
     createNotificationListeners(); //add this line
   }, []);
@@ -272,6 +287,9 @@ const App = () => {
   return (
     <PaperProvider theme={theme}>
     <AuthContext.Provider value={authContext}>
+    <MyContext.Provider
+      value={{ value: [value, setValue], value2: [value2, setValue2] }}
+    >
     <NavigationContainer theme={theme}>
       { loginState.userToken !== null ? (
         <Drawer.Navigator drawerContent={props => <DrawerContent {...props} />}>
@@ -285,6 +303,7 @@ const App = () => {
       <RootStackScreen/>
     }
     </NavigationContainer>
+    </MyContext.Provider>
     </AuthContext.Provider>
     </PaperProvider>
   );

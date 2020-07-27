@@ -10,22 +10,25 @@ import {
 
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import AsyncStorage from '@react-native-community/async-storage';
-
+import { MyContext } from '../components/mycontext';
 const ProfileScreen = () => {
 
   const [imageAvata, setAvata] = useState('');
   const [userName, setUserName] = useState('');
+
+  const { value2 } = React.useContext(MyContext);
+  const [stateValue2, setStateValue2] = value2;
+
   useEffect(async() => {
     
     getUser();
     getImgAvata();
-
   }, []);
 
   const getImgAvata = async() => {
     
     let imageAvata = await AsyncStorage.getItem('imageAvata');
-    // console.log('luan111', imageAvata);
+    console.warn('luan111', imageAvata);
     setAvata(imageAvata)
   }
 
@@ -41,7 +44,7 @@ const ProfileScreen = () => {
         <View style={{flexDirection: 'row', marginTop: 15}}>
           <Avatar.Image 
             source={{
-              uri: imageAvata,
+              uri: stateValue2 ? stateValue2 : imageAvata,
             }}
             size={80}
           />
@@ -58,7 +61,7 @@ const ProfileScreen = () => {
       <View style={styles.userInfoSection}>
         <View style={styles.row}>
           <Icon name="map-marker-radius" color="#777777" size={20}/>
-          <Text style={{color:"#777777", marginLeft: 20}}>Huu Luân</Text>
+          <Text style={{color:"#777777", marginLeft: 20}}>Huu Luân </Text>
         </View>
         <View style={styles.row}>
           <Icon name="phone" color="#777777" size={20}/>

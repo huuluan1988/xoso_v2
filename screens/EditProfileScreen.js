@@ -20,6 +20,7 @@ import BottomSheet from 'reanimated-bottom-sheet';
 import Animated from 'react-native-reanimated';
 
 import ImagePicker from 'react-native-image-crop-picker';
+import { AuthContext } from '../components/context';
 
 const EditProfileScreen = () => {
 
@@ -27,15 +28,18 @@ const EditProfileScreen = () => {
   const [imageAvata, setAvata] = useState('');
   const {colors} = useTheme();
 
+  const { textmo } = React.useContext(AuthContext);
+
   const [data, setData] = React.useState({
     fullname: '',
     city: '',
     check_textInputChange: false,
     secureTextEntry: true,
     confirm_secureTextEntry: true,
-});
+  });
+  
 
-const textFullNameChange = (val) => {
+  const textFullNameChange = (val) => {
     if( val.length !== 0 ) {
         setData({
             ...data,
@@ -102,7 +106,7 @@ const textCityChange = (val) => {
     console.log(colors);
     getUserName()
     getImgAvata();
-
+    
   }, []);
 
   const getImgAvata = async() => {
@@ -152,8 +156,10 @@ const textCityChange = (val) => {
         await AsyncStorage.setItem('imageAvata', image);
       } catch(e) {
         console.log(e);
-    }
+    };
 
+    textmo(image);
+    
     let userName = await AsyncStorage.getItem('userName');
 
     return fetch('https://nhocbi.com/xoso/user', { 
