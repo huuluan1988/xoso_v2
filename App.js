@@ -115,6 +115,7 @@ const App = () => {
   const [loginState, dispatch] = React.useReducer(loginReducer, initialLoginState);
   const [value, setValue] = React.useState("foo");
   const [value2, setValue2] = React.useState("");
+  const [userName, setUserName] = React.useState("");
   const authContext = React.useMemo(() => ({
     signIn: async(foundUser) => {
       // setUserToken('fgkj');
@@ -156,6 +157,7 @@ const App = () => {
   }), []);
 
   useEffect(() => {
+    
     setTimeout(async() => {
       // setIsLoading(false);
       let userToken;
@@ -167,12 +169,20 @@ const App = () => {
       }
 
       try {
-        imageAvata = await AsyncStorage.getItem('imageAvata');
+        let imageAvata = await AsyncStorage.getItem('imageAvata');
         setValue2(imageAvata);
       } catch(e) {
         console.log(e);
       }
       
+      try {
+        let userNameAsy= await AsyncStorage.getItem('userName');
+        setUserName(userNameAsy);
+      } catch(e) {
+        console.log(e);
+      }
+      
+      loadUser();
       // console.log('user token: ', userToken);
       dispatch({ type: 'RETRIEVE_TOKEN', token: userToken });
     }, 100);
@@ -180,7 +190,23 @@ const App = () => {
     createNotificationListeners(); //add this line
   }, []);
 
-  
+  const loadUser = async() => {
+    fetch("http://nhocbi.com/xoso/list_user" + '?username=' + userName, {
+      headers: {
+        "X-Requested-With": "XMLHttpRequest"
+      }
+    }).then(res => res.json())
+      .then(data => {
+        data.map(v=>{
+          saveprofile(v);
+       })
+      });
+  }
+
+  const saveprofile = async(v) =>  {
+    await AsyncStorage.setItem('fullname', v.fullname);
+  }
+
 
   //1
   const checkPermission = async() =>  {

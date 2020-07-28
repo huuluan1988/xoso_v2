@@ -1,6 +1,6 @@
 // https://www.youtube.com/watch?v=-40TBdSRk6E
 // https://topdev.vn/blog/su-dung-usereducer-va-usecontext-de-lam-global-state/
-import React, {useState, useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   View,
   Text,
@@ -10,7 +10,7 @@ import {
   StyleSheet,
 } from 'react-native';
 
-import {useTheme} from 'react-native-paper';
+import { useTheme } from 'react-native-paper';
 
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
@@ -18,7 +18,7 @@ import Feather from 'react-native-vector-icons/Feather';
 import AsyncStorage from '@react-native-community/async-storage';
 import BottomSheet from 'reanimated-bottom-sheet';
 import Animated from 'react-native-reanimated';
-
+import Toast from 'react-native-simple-toast';
 import ImagePicker from 'react-native-image-crop-picker';
 import { AuthContext } from '../components/context';
 
@@ -26,7 +26,8 @@ const EditProfileScreen = () => {
 
   const [image, setImage] = useState('https://nhocbi.com/public/static/templates/frontend/xoso/logo.png');
   const [imageAvata, setAvata] = useState('');
-  const {colors} = useTheme();
+  const [fullName, setfullName] = React.useState("");
+  const { colors } = useTheme();
 
   const { textmo } = React.useContext(AuthContext);
 
@@ -37,42 +38,42 @@ const EditProfileScreen = () => {
     secureTextEntry: true,
     confirm_secureTextEntry: true,
   });
-  
+
 
   const textFullNameChange = (val) => {
-    if( val.length !== 0 ) {
-        setData({
-            ...data,
-            fullname: val,
-            check_textInputChange: true,
-            isValidUser: true
-        });
+    if (val.length !== 0) {
+      setData({
+        ...data,
+        fullname: val,
+        check_textInputChange: true,
+        isValidUser: true
+      });
     } else {
-        setData({
-            ...data,
-            fullname: val,
-            check_textInputChange: false,
-            isValidUser: false
-        });
+      setData({
+        ...data,
+        fullname: val,
+        check_textInputChange: false,
+        isValidUser: false
+      });
     }
-}
-const textCityChange = (val) => {
-    if( val.length !== 0 ) {
-        setData({
-            ...data,
-            city: val,
-            check_textInputChange: true,
-            isValidUser: true
-        });
+  }
+  const textCityChange = (val) => {
+    if (val.length !== 0) {
+      setData({
+        ...data,
+        city: val,
+        check_textInputChange: true,
+        isValidUser: true
+      });
     } else {
-        setData({
-            ...data,
-            city: val,
-            check_textInputChange: false,
-            isValidUser: false
-        });
+      setData({
+        ...data,
+        city: val,
+        check_textInputChange: false,
+        isValidUser: false
+      });
     }
-}
+  }
 
   const takePhotoFromCamera = () => {
     ImagePicker.openCamera({
@@ -106,26 +107,29 @@ const textCityChange = (val) => {
     console.log(colors);
     getUserName()
     getImgAvata();
-    
+
   }, []);
 
-  const getImgAvata = async() => {
-    
+  const getImgAvata = async () => {
+
     let imageAvata = await AsyncStorage.getItem('imageAvata');
     console.log('luan222', imageAvata);
     setAvata(imageAvata)
   }
 
 
-  const getUserName = async() => {
+  const getUserName = async () => {
     let userName = await AsyncStorage.getItem('userName');
     console.log('luan55', userName);
   }
 
+  const showUpdateToast = async () => {
+    Toast.show("Cập nhật thành công", Toast.LONG, Toast.TOP);
+  }
 
   renderInner = () => (
     <View style={styles.panel}>
-      <View style={{alignItems: 'center'}}>
+      <View style={{ alignItems: 'center' }}>
         <Text style={styles.panelTitle}>Upload Photo</Text>
         <Text style={styles.panelSubtitle}>Choose Your Profile Picture</Text>
       </View>
@@ -151,43 +155,55 @@ const textCityChange = (val) => {
     </View>
   );
 
-  const saveProfile = async(fullname, city) => {
-    try {
-        await AsyncStorage.setItem('imageAvata', image);
-      } catch(e) {
+  const saveProfile = async (fullname, city) => {
+    if (fullname != '') {
+      try {
+        await AsyncStorage.setItem('imageAvata', imageAvata ? imageAvata : image);
+      } catch (e) {
         console.log(e);
-    };
+      };
 
-    textmo(image);
-    
-    let userName = await AsyncStorage.getItem('userName');
+      try {
+        await AsyncStorage.setItem('fullname', fullname);
+      } catch (e) {
+        console.log(e);
+      };
 
-    return fetch('https://nhocbi.com/xoso/user', { 
+      textmo(imageAvata ? imageAvata : image);
+
+      let userName = await AsyncStorage.getItem('userName');
+
+      return fetch('https://nhocbi.com/xoso/user', {
         method: 'POST',
         headers: {
           'Accept': 'application/json',
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-            username: userName,
-            fullname: fullname,
-            city: city,
-          })
+          username: userName,
+          fullname: fullname,
+          city: city,
+          image: imageAvata ? imageAvata : image,
         })
+      })
         .then((response) => response.json())
         .then((responseJson) => {
-          if(responseJson.Code == 1) {
+          if (responseJson.Code == 1) {
             console.log(responseJson);
+            showUpdateToast();
+            setfullName(fullname);
           } else {
-              console.log(responseJson);
+            console.log(responseJson);
           }
         })
-        .catch((error) =>{
+        .catch((error) => {
           console.error(error);
         });
-    
+    } else {
+      alert('Tên không được rỗng');
+    };
+  }
 
-  };
 
   bs = React.createRef();
   fall = new Animated.Value(1);
@@ -203,10 +219,11 @@ const textCityChange = (val) => {
         callbackNode={this.fall}
         enabledGestureInteraction={true}
       />
-      <Animated.View style={{margin: 20,
+      <Animated.View style={{
+        margin: 20,
         opacity: Animated.add(0.1, Animated.multiply(this.fall, 1.0)),
-    }}>
-        <View style={{alignItems: 'center'}}>
+      }}>
+        <View style={{ alignItems: 'center' }}>
           <TouchableOpacity onPress={() => this.bs.current.snapTo(0)}>
             <View
               style={{
@@ -218,10 +235,10 @@ const textCityChange = (val) => {
               }}>
               <ImageBackground
                 source={{
-                  uri: imageAvata? imageAvata: image,
+                  uri: imageAvata ? imageAvata : image,
                 }}
-                style={{height: 100, width: 100}}
-                imageStyle={{borderRadius: 15}}>
+                style={{ height: 100, width: 100 }}
+                imageStyle={{ borderRadius: 15 }}>
                 <View
                   style={{
                     flex: 1,
@@ -245,15 +262,15 @@ const textCityChange = (val) => {
               </ImageBackground>
             </View>
           </TouchableOpacity>
-          <Text style={{marginTop: 10, fontSize: 18, fontWeight: 'bold'}}>
-            John Doe
+          <Text style={{ marginTop: 10, fontSize: 18, fontWeight: 'bold' }}>
+            {fullName}
           </Text>
         </View>
 
         <View style={styles.action}>
           <FontAwesome name="user-o" color={colors.text} size={20} />
           <TextInput
-            placeholder="First Name"
+            placeholder="Tên của bạn"
             placeholderTextColor="#666666"
             autoCorrect={false}
             onChangeText={(val) => textFullNameChange(val)}
@@ -268,7 +285,7 @@ const textCityChange = (val) => {
         <View style={styles.action}>
           <Icon name="map-marker-outline" color={colors.text} size={20} />
           <TextInput
-            placeholder="Thành Phó"
+            placeholder="Thành Phố"
             placeholderTextColor="#666666"
             autoCorrect={false}
             onChangeText={(val) => textCityChange(val)}
@@ -280,8 +297,8 @@ const textCityChange = (val) => {
             ]}
           />
         </View>
-        <TouchableOpacity style={styles.commandButton} onPress={() => {saveProfile(data.fullname, data.city)}}>
-          <Text style={styles.panelButtonTitle}>Submit</Text>
+        <TouchableOpacity style={styles.commandButton} onPress={() => { saveProfile(data.fullname, data.city) }}>
+          <Text style={styles.panelButtonTitle}>Đồng ý</Text>
         </TouchableOpacity>
       </Animated.View>
     </View>
@@ -315,7 +332,7 @@ const styles = StyleSheet.create({
   header: {
     backgroundColor: '#FFFFFF',
     shadowColor: '#333333',
-    shadowOffset: {width: -1, height: -3},
+    shadowOffset: { width: -1, height: -3 },
     shadowRadius: 2,
     shadowOpacity: 0.4,
     // elevation: 5,

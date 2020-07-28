@@ -3,7 +3,7 @@ import {View, StyleSheet, Dimensions, Image, ScrollView, FlatList, Text} from 'r
 import {Block, Button, TextView} from '../components';
 import {Colors} from '../components/color';
 import Feather from 'react-native-vector-icons/Feather';
-
+import AsyncStorage from '@react-native-community/async-storage';
 import {useNavigation} from '@react-navigation/native'
 const W = Dimensions.get('window').width;
 
@@ -58,10 +58,14 @@ const HomeScreen = (navigate) => {
   const [totalDuDoan, setTotalDuDoan] = useState(0);
   const [totalDuDoanTrung, setTotalDuDoanTrung] = useState(0);
   const [userName, setUserName] = useState('');
+
   useEffect(() => {
     load();
     loadTyleĐuoan();
     getUser();
+    loadUser();
+
+    
   }, []);
 
   const getUser = async() => {
@@ -82,6 +86,19 @@ const HomeScreen = (navigate) => {
           setDataSource(data);
         };
         
+      });
+  }
+
+  const loadUser = () => {
+    fetch("http://nhocbi.com/xoso/list_user" + '?username=' + userName, {
+      headers: {
+        "X-Requested-With": "XMLHttpRequest"
+      }
+    }).then(res => res.json())
+      .then(data => {
+        data.map(v=>{
+          setUserName(v.fullname);
+       })
       });
   }
 

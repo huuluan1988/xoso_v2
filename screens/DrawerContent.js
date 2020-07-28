@@ -16,7 +16,7 @@ import {
 } from '@react-navigation/drawer';
 import AsyncStorage from '@react-native-community/async-storage';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
-
+import { MyContext } from '../components/mycontext';
 import { AuthContext } from '../components/context';
 
 export function DrawerContent(props) {
@@ -25,13 +25,15 @@ export function DrawerContent(props) {
 
     const { signOut, toggleTheme } = React.useContext(AuthContext);
 
-
+    const { value2 } = React.useContext(MyContext);
+    const [stateValue2, setStateValue2] = value2;
     const [imageAvata, setAvata] = useState('https://nhocbi.com/public/static/templates/frontend/xoso/logo.png');
-
+    const [userName, setUserName] = useState('');
+    const [fullName, setfullName] = React.useState("");
     useEffect(() => {
         
         getImgAvata();
-
+        getUserInfo();
     }, []);
 
     const getImgAvata = async() => {
@@ -40,26 +42,32 @@ export function DrawerContent(props) {
         setAvata(imageAvata)
     }
 
+    const getUserInfo = async() => {
+        let fullname = await AsyncStorage.getItem('fullname');
+        let username = await AsyncStorage.getItem('userName');
+        setfullName(fullname);
+        setUserName(username);
+    }
 
     return (
         <View style={{ flex: 1 }}>
             <DrawerContentScrollView {...props}>
                 <View style={styles.drawerContent}>
                     <View style={styles.userInfoSection}>
-                        <View style={{ flexDirection: 'row', marginTop: 15 }}>
+                        <View style={{ flexDirection: 'row', marginTop: 15 ,borderBottomWidth: 1, borderBottomColor: '#f2f2f2', paddingBottom: 15}}>
                             <Avatar.Image
                                 source={{
-                                    uri: imageAvata
+                                    uri: stateValue2 ? stateValue2 : imageAvata,
                                 }}
                                 size={50}
                             />
                             <View style={{ marginLeft: 15, flexDirection: 'column' }}>
-                                <Title style={styles.title}>Hữu Luân</Title>
-                                <Caption style={styles.caption}>huuluan</Caption>
+                            <Title style={styles.title}>{fullName}</Title>
+                            <Caption style={styles.caption}>{userName}</Caption>
                             </View>
                         </View>
 
-                        <View style={styles.row}>
+                        {/* <View style={styles.row}>
                             <View style={styles.section}>
                                 <Paragraph style={[styles.paragraph, styles.caption]}>80</Paragraph>
                                 <Caption style={styles.caption}>Following</Caption>
@@ -68,7 +76,7 @@ export function DrawerContent(props) {
                                 <Paragraph style={[styles.paragraph, styles.caption]}>100</Paragraph>
                                 <Caption style={styles.caption}>Followers</Caption>
                             </View>
-                        </View>
+                        </View> */}
                     </View>
                     <Drawer.Section style={styles.drawerSection}>
                         <DrawerItem

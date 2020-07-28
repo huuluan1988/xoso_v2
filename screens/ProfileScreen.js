@@ -15,14 +15,14 @@ const ProfileScreen = () => {
 
   const [imageAvata, setAvata] = useState('');
   const [userName, setUserName] = useState('');
-
+  const [fullName, setfullName] = React.useState("");
   const { value2 } = React.useContext(MyContext);
   const [stateValue2, setStateValue2] = value2;
 
   useEffect(async() => {
     
-    getUser();
     getImgAvata();
+    getUserInfo();
   }, []);
 
   const getImgAvata = async() => {
@@ -32,10 +32,13 @@ const ProfileScreen = () => {
     setAvata(imageAvata)
   }
 
-  const getUser = async() => {
-    let userName = await AsyncStorage.getItem('userName');
-    setUserName(userName)
-  }
+
+  const getUserInfo = async() => {
+    let fullname = await AsyncStorage.getItem('fullname');
+    let username = await AsyncStorage.getItem('userName');
+    setfullName(fullname);
+    setUserName(username);
+}
 
   return (
     <SafeAreaView style={styles.container}>
@@ -52,7 +55,7 @@ const ProfileScreen = () => {
             <Title style={[styles.title, {
               marginTop:15,
               marginBottom: 5,
-            }]}>{userName}</Title>
+            }]}>{fullName}</Title>
             <Caption style={styles.caption}>{userName}</Caption>
           </View>
         </View>
@@ -61,7 +64,7 @@ const ProfileScreen = () => {
       <View style={styles.userInfoSection}>
         <View style={styles.row}>
           <Icon name="map-marker-radius" color="#777777" size={20}/>
-          <Text style={{color:"#777777", marginLeft: 20}}>Huu Luân </Text>
+          <Text style={{color:"#777777", marginLeft: 20}}>{fullName}</Text>
         </View>
         <View style={styles.row}>
           <Icon name="phone" color="#777777" size={20}/>
@@ -78,12 +81,12 @@ const ProfileScreen = () => {
             borderRightColor: '#dddddd',
             borderRightWidth: 1
           }]}>
-            <Title>$140</Title>
-            <Caption>Wallet</Caption>
+            <Title>12</Title>
+            <Caption>Dự đoán trúng</Caption>
           </View>
           <View style={styles.infoBox}>
-            <Title>12</Title>
-            <Caption>Orders</Caption>
+            <Title>55</Title>
+            <Caption>Số lần dự đoán</Caption>
           </View>
       </View>
 
