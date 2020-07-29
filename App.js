@@ -54,6 +54,11 @@ const App = () => {
 
   const [isDarkTheme, setIsDarkTheme] = React.useState(false);
   const [theme1, setTheme] = useState('Light');
+
+  const [value, setValue] = React.useState("foo");
+  const [value2, setValue2] = React.useState("");
+  const [userNameA, setUserName] = React.useState("");
+  
   const initialLoginState = {
     isLoading: true,
     userName: null,
@@ -84,6 +89,7 @@ const App = () => {
 
   const theme = isDarkTheme ? CustomDarkTheme : CustomDefaultTheme;
 
+  
   const loginReducer = (prevState, action) => {
     switch( action.type ) {
       case 'RETRIEVE_TOKEN': 
@@ -117,9 +123,7 @@ const App = () => {
   };
 
   const [loginState, dispatch] = React.useReducer(loginReducer, initialLoginState);
-  const [value, setValue] = React.useState("foo");
-  const [value2, setValue2] = React.useState("");
-  const [userName, setUserName] = React.useState("");
+ 
   const authContext = React.useMemo(() => ({
     signIn: async(foundUser) => {
       // setUserToken('fgkj');
@@ -161,6 +165,7 @@ const App = () => {
   }), []);
 
   useEffect(() => {
+
     
     setTimeout(async() => {
       // setIsLoading(false);
@@ -171,33 +176,39 @@ const App = () => {
       } catch(e) {
         console.log(e);
       }
-
+      dispatch({ type: 'RETRIEVE_TOKEN', token: userToken });
       try {
         let imageAvata = await AsyncStorage.getItem('imageAvata');
         setValue2(imageAvata);
       } catch(e) {
         console.log(e);
       }
-      
+
       try {
         let userNameAsy= await AsyncStorage.getItem('userName');
+        
         setUserName(userNameAsy);
+
       } catch(e) {
         console.log(e);
       }
       
+      // console.log('user token: ', userToken);
       loadUser();
       loadHistory();
-      // console.log('user token: ', userToken);
-      dispatch({ type: 'RETRIEVE_TOKEN', token: userToken });
     }, 100);
+
+      
     checkPermission();
     createNotificationListeners(); //add this line
   }, []);
 
   const loadUser = async() => {
-    console.log('lôilo',userName);
-    fetch("http://nhocbi.com/xoso/list_user" + '?username=' + userName, {
+
+    
+
+    console.log('lôilo',userNameA);
+    fetch("http://nhocbi.com/xoso/list_user" + '?username=' + userNameA, {
       headers: {
         "X-Requested-With": "XMLHttpRequest"
       }

@@ -132,9 +132,9 @@ const SignInScreen = ({navigation}) => {
    
         try {
             await AsyncStorage.setItem('userName', userName);
-          } catch(e) {
+        } catch(e) {
             console.log(e);
-          }
+        }
 
         // console.log(userName);
         return fetch('https://nhocbi.com/xoso/login', { 
