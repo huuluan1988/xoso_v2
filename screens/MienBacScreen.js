@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, Button, StyleSheet } from 'react-native';
 import { WebView } from 'react-native-webview';
+import AsyncStorage from '@react-native-community/async-storage';
 const MienBacScreen = ({navigation}) => {
 
   const [userName, setUserName] = useState('');
@@ -18,7 +19,7 @@ const MienBacScreen = ({navigation}) => {
       <View style={{ flex: 1 }}>
         <WebView
               source={{
-                uri: 'https://nhocbi.com/xoso/mienbac' + '?username=' + userName,
+                uri: 'https://nhocbi.com/xoso/mienbac?username=' + userName,
                 baseUrl: '',
               }}
               startInLoadingState={true}

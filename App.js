@@ -44,6 +44,10 @@ const ProfileStack = createStackNavigator();
 const HistoryStack = createStackNavigator();
 const SettingStack = createStackNavigator();
 const Drawer = createDrawerNavigator();
+
+var SQLite = require('react-native-sqlite-storage');
+var db = SQLite.openDatabase({name:'testDB.db',createFromLocation : '~sqlite_xoso.db'});
+
 const App = () => {
   // const [isLoading, setIsLoading] = React.useState(true);
   // const [userToken, setUserToken] = React.useState(null); 
@@ -183,6 +187,7 @@ const App = () => {
       }
       
       loadUser();
+      loadHistory();
       // console.log('user token: ', userToken);
       dispatch({ type: 'RETRIEVE_TOKEN', token: userToken });
     }, 100);
@@ -191,6 +196,7 @@ const App = () => {
   }, []);
 
   const loadUser = async() => {
+    console.log('lôilo',userName);
     fetch("http://nhocbi.com/xoso/list_user" + '?username=' + userName, {
       headers: {
         "X-Requested-With": "XMLHttpRequest"
@@ -198,13 +204,32 @@ const App = () => {
     }).then(res => res.json())
       .then(data => {
         data.map(v=>{
+          console.log(v);
           saveprofile(v);
        })
       });
   }
 
+  const loadHistory = async() => {
+    fetch("http://nhocbi.com/xoso/list_so_dudoan" + '?username=' + userName, {
+      headers: {
+        "X-Requested-With": "XMLHttpRequest"
+      }
+    }).then(res => res.json())
+      .then(data => {
+        console.log(data);
+        data.map(v=>{
+          // db.transaction(function (tx) {
+          //   tx.executeSql('INSERT INTO  (code, word, category_id, image, time) VALUES (?,?,?,?,?)', [code, word, category_id, image, time]);
+          // });
+       })
+      });
+  }
+
+
   const saveprofile = async(v) =>  {
     await AsyncStorage.setItem('fullname', v.fullname);
+    await AsyncStorage.setItem('city', v.city);
   }
 
 

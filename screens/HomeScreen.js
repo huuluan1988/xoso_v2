@@ -69,8 +69,8 @@ const HomeScreen = (navigate) => {
   }, []);
 
   const getUser = async() => {
-    let userName = await AsyncStorage.getItem('userName');
-    setUserName(userName)
+    let username = await AsyncStorage.getItem('userName');
+    setUserName(username)
   }
 
   const load = () => {
@@ -115,8 +115,8 @@ const HomeScreen = (navigate) => {
         } else {
           data.map(a=>{
             console.log(a.tong_du_doan_trung.length)
-            setTotalDuDoan(a.tong_dudoan.length);
-            setTotalDuDoanTrung(a.tong_du_doan_trung.length);
+            setTotalDuDoan(a.tong_dudoan.length = 0 ? 0 : a.tong_dudoan.length);
+            setTotalDuDoanTrung(a.tong_du_doan_trung.length = 0 ? 0 : a.tong_du_doan_trung.length);
          })
         };
 

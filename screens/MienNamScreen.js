@@ -1,12 +1,26 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, Text, Button, StyleSheet } from 'react-native';
 import { WebView } from 'react-native-webview';
+import AsyncStorage from '@react-native-community/async-storage';
+
 const MienNamScreen = () => {
+
+  const [userName, setUserName] = useState('');
+
+  useEffect(() => {
+    getUser();
+  }, []);
+
+  const getUser = async() => {
+    let userNameinfo = await AsyncStorage.getItem('userName');
+    setUserName(userNameinfo)
+  }
+
     return (
       <View style={{ flex: 1 }}>
         <WebView
               source={{
-                uri: 'https://nhocbi.com/xoso/miennam',
+                uri: 'https://nhocbi.com/xoso/miennam?username=' + userName,
                 baseUrl: '',
               }}
               startInLoadingState={true}

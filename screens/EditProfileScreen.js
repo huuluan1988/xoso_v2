@@ -27,6 +27,7 @@ const EditProfileScreen = () => {
   const [image, setImage] = useState('https://nhocbi.com/public/static/templates/frontend/xoso/logo.png');
   const [imageAvata, setAvata] = useState('');
   const [fullName, setfullName] = React.useState("");
+  const [city, setCity] = React.useState("");
   const { colors } = useTheme();
 
   const { textmo } = React.useContext(AuthContext);
@@ -114,12 +115,15 @@ const EditProfileScreen = () => {
 
     let imageAvata = await AsyncStorage.getItem('imageAvata');
     console.log('luan222', imageAvata);
-    setAvata(imageAvata)
+    setAvata(imageAvata);
   }
 
 
   const getUserName = async () => {
-    let userName = await AsyncStorage.getItem('userName');
+    let fullName = await AsyncStorage.getItem('fullname');
+    let userCity = await AsyncStorage.getItem('city');
+    setfullName(fullName);
+    setCity(userCity);
     console.log('luan55', userName);
   }
 
@@ -192,6 +196,7 @@ const EditProfileScreen = () => {
             console.log(responseJson);
             showUpdateToast();
             setfullName(fullname);
+            setCity(city);
           } else {
             console.log(responseJson);
           }
@@ -274,6 +279,7 @@ const EditProfileScreen = () => {
             placeholderTextColor="#666666"
             autoCorrect={false}
             onChangeText={(val) => textFullNameChange(val)}
+            defaultValue={fullName}
             style={[
               styles.textInput,
               {
@@ -289,6 +295,7 @@ const EditProfileScreen = () => {
             placeholderTextColor="#666666"
             autoCorrect={false}
             onChangeText={(val) => textCityChange(val)}
+            defaultValue={city}
             style={[
               styles.textInput,
               {

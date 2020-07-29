@@ -1,6 +1,9 @@
 import React from 'react';
 import { View, Text, Button, StyleSheet } from 'react-native';
+import ListView from 'deprecated-react-native-listview';
 
+var SQLite = require('react-native-sqlite-storage');
+var db = SQLite.openDatabase({name:'testDB.db',createFromLocation : '~sqlite_xoso.db'});
 const History = () => {
     return (
       <View style={styles.container}>

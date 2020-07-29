@@ -45,7 +45,11 @@ const MainTabScreen = () => (
           tabBarLabel: 'Miền Bắc',
           tabBarColor: '#1f65ff',
           tabBarIcon: ({ color }) => (
-            <Icon name="ios-notifications" color={color} size={26} />
+            // <Icon name="ios-notifications" color={color} size={26} />
+            <Image styles ={{borderRadius: 5}}
+                source={require('../assets/icon-mienbac.png')}
+              size={50}
+            />
           ),
         }}
       />
@@ -56,7 +60,11 @@ const MainTabScreen = () => (
           tabBarLabel: 'Miền Nam',
           tabBarColor: '#d02860',
           tabBarIcon: ({ color }) => (
-            <Icon name="ios-aperture" color={color} size={26} />
+            // <Icon name="ios-aperture" color={color} size={26} />
+            <Image styles ={{borderRadius: 5}}
+                source={require('../assets/icon-miennam.png')}
+              size={50}
+            />
           ),
         }}
       />
@@ -67,7 +75,11 @@ const MainTabScreen = () => (
           tabBarLabel: 'Miền Trung',
           tabBarColor: '#d02860',
           tabBarIcon: ({ color }) => (
-            <Icon name="ios-aperture" color={color} size={26} />
+            // <Icon name="ios-aperture" color={color} size={26} />
+            <Image styles ={{borderRadius: 5}}
+                source={require('../assets/icon-mientrung.png')}
+              size={50}
+            />
           ),
         }}
       />
