@@ -58,7 +58,7 @@ const App = () => {
   const [value, setValue] = React.useState("foo");
   const [value2, setValue2] = React.useState("");
   const [userNameA, setUserName] = React.useState("");
-  
+
   const initialLoginState = {
     isLoading: true,
     userName: null,
@@ -167,6 +167,7 @@ const App = () => {
   useEffect(() => {
 
     
+
     setTimeout(async() => {
       // setIsLoading(false);
       let userToken;
@@ -184,15 +185,9 @@ const App = () => {
         console.log(e);
       }
 
-      try {
-        let userNameAsy= await AsyncStorage.getItem('userName');
-        
-        setUserName(userNameAsy);
-
-      } catch(e) {
-        console.log(e);
-      }
       
+      
+    
       // console.log('user token: ', userToken);
       loadUser();
       loadHistory();
@@ -206,9 +201,10 @@ const App = () => {
   const loadUser = async() => {
 
     
+   
+    let userNameAsy = await AsyncStorage.getItem('userName');
 
-    console.log('lôilo',userNameA);
-    fetch("http://nhocbi.com/xoso/list_user" + '?username=' + userNameA, {
+    fetch("http://nhocbi.com/xoso/list_user" + '?username=' + userNameAsy, {
       headers: {
         "X-Requested-With": "XMLHttpRequest"
       }
@@ -222,7 +218,9 @@ const App = () => {
   }
 
   const loadHistory = async() => {
-    fetch("http://nhocbi.com/xoso/list_so_dudoan" + '?username=' + userName, {
+    let userNameAsy = await AsyncStorage.getItem('userName');
+
+    fetch("http://nhocbi.com/xoso/list_so_dudoan" + '?username=' + userNameAsy, {
       headers: {
         "X-Requested-With": "XMLHttpRequest"
       }

@@ -55,13 +55,14 @@ const ItemField = ({icon, title, total_du_doan, total_du_doan_trung, link}) => {
 const HomeScreen = (navigate) => {
 
   const [dataSource, setDataSource] = useState([]);
+  const [dataSourceMien, setDataSourceMien] = useState([]);
   const [totalDuDoan, setTotalDuDoan] = useState(0);
   const [totalDuDoanTrung, setTotalDuDoanTrung] = useState(0);
   const [userName, setUserName] = useState('');
 
   useEffect(() => {
     load();
-    loadTyleĐuoan();
+    loadTyleĐuoan('mienbac');
     getUser();
     loadUser();
 
@@ -73,8 +74,9 @@ const HomeScreen = (navigate) => {
     setUserName(username)
   }
 
-  const load = () => {
-    fetch("http://nhocbi.com/xoso/list_so_dudoan" + '?username=' + userName, {
+  const load = async() => {
+    let username = await AsyncStorage.getItem('userName');
+    fetch("http://nhocbi.com/xoso/list_so_dudoan" + '?username=' + username, {
       headers: {
         "X-Requested-With": "XMLHttpRequest"
       }
@@ -89,7 +91,7 @@ const HomeScreen = (navigate) => {
       });
   }
 
-  const loadUser = () => {
+  const loadUser = async() => {
     fetch("http://nhocbi.com/xoso/list_user" + '?username=' + userName, {
       headers: {
         "X-Requested-With": "XMLHttpRequest"
@@ -102,8 +104,9 @@ const HomeScreen = (navigate) => {
       });
   }
 
-  const loadTyleĐuoan = () => {
-    fetch("http://nhocbi.com/xoso/tyle_du_doan" + '?username=' + userName, {
+  const loadTyleĐuoan = async(v) => {
+    let username = await AsyncStorage.getItem('userName');
+    fetch("http://nhocbi.com/xoso/tyle_du_doan" + '?username=' + username + '&kg_mien=' + v,  {
       headers: {
         "X-Requested-With": "XMLHttpRequest"
       }
