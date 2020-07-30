@@ -21,7 +21,7 @@ const Item = ({somoinhat, dai}) => {
   );
 };
 
-const ItemField = ({icon, title, total_du_doan, total_du_doan_trung, link}) => {
+const ItemField = ({image, title, total_du_doan, total_du_doan_trung, link}) => {
   const navigation = useNavigation();
   return (
     <Button onPress={() => {
@@ -36,7 +36,7 @@ const ItemField = ({icon, title, total_du_doan, total_du_doan_trung, link}) => {
         paddingHorizontal={10}
         style={{marginTop: 10}}>
         
-        <Image style={styles.img_item} resizeMode="contain" source={icon} />
+        <Image style={styles.img_item} resizeMode="contain" source={{uri:image}} />
         <Block padding={10} style={styles.field_con}>
           <TextView size={16} bold>
             {title}
@@ -56,8 +56,6 @@ const HomeScreen = (navigate) => {
 
   const [dataSource, setDataSource] = useState([]);
   const [dataSourceMien, setDataSourceMien] = useState([]);
-  const [totalDuDoan, setTotalDuDoan] = useState(0);
-  const [totalDuDoanTrung, setTotalDuDoanTrung] = useState(0);
   const [userName, setUserName] = useState('');
 
   useEffect(() => {
@@ -106,21 +104,18 @@ const HomeScreen = (navigate) => {
 
   const loadTyleĐuoan = async(v) => {
     let username = await AsyncStorage.getItem('userName');
-    fetch("http://nhocbi.com/xoso/tyle_du_doan" + '?username=' + username + '&kg_mien=' + v,  {
+    // fetch("http://nhocbi.com/xoso/tyle_du_doan" + '?username=' + username + '&kg_mien=' + v,  {
+
+      fetch("http://nhocbi.com/xoso/tyle_du_doan?username=" + 'titopchono',  {
       headers: {
         "X-Requested-With": "XMLHttpRequest"
       }
     }).then(res => res.json())
       .then(data => {
         if(data == ''){
-          setTotalDuDoan(0);
-          setTotalDuDoanTrung(0);
+          setDataSourceMien()
         } else {
-          data.map(a=>{
-            console.log(a.tong_du_doan_trung.length)
-            setTotalDuDoan(a.tong_dudoan.length = 0 ? 0 : a.tong_dudoan.length);
-            setTotalDuDoanTrung(a.tong_du_doan_trung.length = 0 ? 0 : a.tong_du_doan_trung.length);
-         })
+          setDataSourceMien(data)
         };
 
         
@@ -168,7 +163,20 @@ const HomeScreen = (navigate) => {
         <Block padding={10}>
           <TextView h6>Xổ Số 3 Miền</TextView>
           <Block>
-            <ItemField
+          <FlatList
+              data={dataSourceMien}
+              renderItem={({ item }) => (
+                <ItemField
+                  title={item.mien}
+                  total_du_doan={item.tong}
+                  total_du_doan_trung={item.tong_trung}
+                  link={item.link}
+                  navigate='navigate'
+                  image= {item.image}
+                />
+              )}
+            />
+            {/* <ItemField
               title="Miền Bắc"
               total_du_doan={totalDuDoan}
               total_du_doan_trung={totalDuDoanTrung}
@@ -190,7 +198,7 @@ const HomeScreen = (navigate) => {
               link="MienTrung"
 
               icon={require('../assets/img-trung.jpg')}
-            />
+            /> */}
           </Block>
         </Block>
       </Block>
