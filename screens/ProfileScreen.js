@@ -68,11 +68,11 @@ const ProfileScreen = () => {
         </View>
         <View style={styles.row}>
           <Icon name="phone" color="#777777" size={20}/>
-          <Text style={{color:"#777777", marginLeft: 20}}>+0988585821</Text>
+          <Text style={{color:"#777777", marginLeft: 20}}>???</Text>
         </View>
         <View style={styles.row}>
           <Icon name="email" color="#777777" size={20}/>
-          <Text style={{color:"#777777", marginLeft: 20}}>Huế</Text>
+          <Text style={{color:"#777777", marginLeft: 20}}>???</Text>
         </View>
       </View>
 

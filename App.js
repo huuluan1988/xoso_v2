@@ -46,7 +46,7 @@ const SettingStack = createStackNavigator();
 const Drawer = createDrawerNavigator();
 
 var SQLite = require('react-native-sqlite-storage');
-var db = SQLite.openDatabase({name:'testDB.db',createFromLocation : '~sqlite_xoso.db'});
+var db = SQLite.openDatabase({ name: 'testDB.db', createFromLocation: '~sqlite_effortless.db' });
 
 const App = () => {
   // const [isLoading, setIsLoading] = React.useState(true);
@@ -199,9 +199,6 @@ const App = () => {
   }, []);
 
   const loadUser = async() => {
-
-    
-   
     let userNameAsy = await AsyncStorage.getItem('userName');
 
     fetch("http://nhocbi.com/xoso/list_user" + '?username=' + userNameAsy, {
@@ -220,17 +217,20 @@ const App = () => {
   const loadHistory = async() => {
     let userNameAsy = await AsyncStorage.getItem('userName');
 
-    fetch("http://nhocbi.com/xoso/list_so_dudoan" + '?username=' + userNameAsy, {
+    fetch("http://nhocbi.com/xoso/list_so_dudoan_all?username=" + userNameAsy, {
       headers: {
         "X-Requested-With": "XMLHttpRequest"
       }
     }).then(res => res.json())
       .then(data => {
-        console.log(data);
+        console.log('luanoi',data);
+        db.transaction(function (tx) {
+          tx.executeSql('DELETE FROM history_dudoan');
+        });
         data.map(v=>{
-          // db.transaction(function (tx) {
-          //   tx.executeSql('INSERT INTO  (code, word, category_id, image, time) VALUES (?,?,?,?,?)', [code, word, category_id, image, time]);
-          // });
+          db.transaction(function (tx) {
+            tx.executeSql('INSERT INTO history_dudoan  (so_dudoan, dai_dudoan_text, created) VALUES (?,?,?)', [v.so_dudoan, v.dai_dudoan_text, v.created]);
+          });
        })
       });
   }

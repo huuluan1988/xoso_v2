@@ -74,7 +74,7 @@ const HomeScreen = (navigate) => {
 
   const load = async() => {
     let username = await AsyncStorage.getItem('userName');
-    fetch("http://nhocbi.com/xoso/list_so_dudoan" + '?username=' + username, {
+    fetch("http://nhocbi.com/xoso/list_so_dudoan?username=" + username, {
       headers: {
         "X-Requested-With": "XMLHttpRequest"
       }
@@ -90,7 +90,8 @@ const HomeScreen = (navigate) => {
   }
 
   const loadUser = async() => {
-    fetch("http://nhocbi.com/xoso/list_user" + '?username=' + userName, {
+    let username = await AsyncStorage.getItem('userName');
+    fetch("http://nhocbi.com/xoso/list_user?username=" + username, {
       headers: {
         "X-Requested-With": "XMLHttpRequest"
       }
@@ -106,7 +107,7 @@ const HomeScreen = (navigate) => {
     let username = await AsyncStorage.getItem('userName');
     // fetch("http://nhocbi.com/xoso/tyle_du_doan" + '?username=' + username + '&kg_mien=' + v,  {
 
-      fetch("http://nhocbi.com/xoso/tyle_du_doan?username=" + 'titopchono',  {
+      fetch("http://nhocbi.com/xoso/tyle_du_doan?username=" + username,  {
       headers: {
         "X-Requested-With": "XMLHttpRequest"
       }

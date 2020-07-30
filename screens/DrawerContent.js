@@ -19,6 +19,12 @@ import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { MyContext } from '../components/mycontext';
 import { AuthContext } from '../components/context';
 
+import { openDatabase } from 'react-native-sqlite-storage';
+
+var SQLite = require('react-native-sqlite-storage');
+
+var db = SQLite.openDatabase({ name: 'testDB.db', createFromLocation: '~sqlite_effortless.db' });
+
 export function DrawerContent(props) {
 
     const paperTheme = useTheme();
@@ -34,6 +40,13 @@ export function DrawerContent(props) {
         
         getImgAvata();
         getUserInfo();
+
+        db.transaction((tx) => {
+            tx.executeSql('INSERT INTO history_dudoan (username, so_dudoan, dai_dudoan_text, dai_dudoan_sub, dai_dudoan, ngay_dudoan) VALUES (?,?,?,?,?,?)', ['gosu', '204', 'Vĩnh Long','VL', 'mientrung', '232323']);
+            console.log('ok');
+      
+        });
+
     }, []);
 
     const getImgAvata = async() => {
