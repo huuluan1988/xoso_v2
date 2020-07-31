@@ -45,8 +45,10 @@ const HistoryStack = createStackNavigator();
 const SettingStack = createStackNavigator();
 const Drawer = createDrawerNavigator();
 
-var SQLite = require('react-native-sqlite-storage');
-var db = SQLite.openDatabase({ name: 'testDB.db', createFromLocation: '~sqlite_effortless.db' });
+import { openDatabase } from 'react-native-sqlite-storage';
+
+var db = openDatabase({ name: 'sqlite_xoso.db', createFromLocation : 1});
+
 
 const App = () => {
   // const [isLoading, setIsLoading] = React.useState(true);
@@ -166,8 +168,6 @@ const App = () => {
 
   useEffect(() => {
 
-    
-
     setTimeout(async() => {
       // setIsLoading(false);
       let userToken;
@@ -186,16 +186,18 @@ const App = () => {
       }
 
       
-      
     
       // console.log('user token: ', userToken);
       loadUser();
       loadHistory();
-    }, 100);
 
+      checkPermission();
+      createNotificationListeners(); //add this line
       
-    checkPermission();
-    createNotificationListeners(); //add this line
+    }, 100);
+    
+      
+   
   }, []);
 
   const loadUser = async() => {
@@ -208,7 +210,6 @@ const App = () => {
     }).then(res => res.json())
       .then(data => {
         data.map(v=>{
-          console.log(v);
           saveprofile(v);
        })
       });
@@ -217,19 +218,20 @@ const App = () => {
   const loadHistory = async() => {
     let userNameAsy = await AsyncStorage.getItem('userName');
 
+    
     fetch("http://nhocbi.com/xoso/list_so_dudoan_all?username=" + userNameAsy, {
       headers: {
         "X-Requested-With": "XMLHttpRequest"
       }
     }).then(res => res.json())
       .then(data => {
-        console.log('luanoi',data);
+      
         db.transaction(function (tx) {
           tx.executeSql('DELETE FROM history_dudoan');
         });
         data.map(v=>{
           db.transaction(function (tx) {
-            tx.executeSql('INSERT INTO history_dudoan  (so_dudoan, dai_dudoan_text, created) VALUES (?,?,?)', [v.so_dudoan, v.dai_dudoan_text, v.created]);
+            tx.executeSql('INSERT INTO history_dudoan (so_dudoan, dai_dudoan_text, dai_dudoan_sub, so_trung, dai_dudoan, created) VALUES (?,?,?,?,?,?)', [v.so_dudoan, v.dai_dudoan_text, v.dai_dudoan_sub, v.xoso_is_trung, v.dai_dudoan,  v.created]);
           });
        })
       });

@@ -141,7 +141,7 @@ const HomeScreen = (navigate) => {
         <Block padding={10}>
           <TextView h6>Số dự đoán hôm nay:</TextView>
           <Block direction="row" paddingVertical={10}>
-          {dataSource ?  <ScrollView>
+          {!dataSource ? <TextView >Bạn chưa tham gia dự đoán ngày hôm nay!</TextView>   : <ScrollView>
             <FlatList
               data={dataSource}
               horizontal
@@ -151,7 +151,7 @@ const HomeScreen = (navigate) => {
                 </View>
               )}
             />
-          </ScrollView> : <TextView >Bạn chưa tham gia dự đoán ngày hôm nay!</TextView> }
+          </ScrollView> }
             {/* <Item somoinhat="3/8" dai="Miền Bắc" />
             <Block width={10} />
             <Item somoinhat="09856" dai="Miền Bắc" />

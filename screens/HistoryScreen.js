@@ -3,24 +3,21 @@ import { View, Text, Button, StyleSheet, FlatList, SafeAreaView } from 'react-na
 import ListView from 'deprecated-react-native-listview';
 import Toast from 'react-native-simple-toast';
 
-var SQLite = require('react-native-sqlite-storage');
+import { openDatabase } from 'react-native-sqlite-storage';
 
-var db = SQLite.openDatabase({ name: 'testDB.db', createFromLocation: '~sqlite_effortless.db' });
-// var db = openDatabase({ name: 'sqlite_xoso.db', createFromLocation : 1});
+var db = openDatabase({ name: 'sqlite_xoso.db', createFromLocation : 1});
+
 const History = () => {
 
   let [flatListItems, setFlatListItems] = useState([]);
-  // var db = openDatabase({ name: 'sqlite_xoso.db' });
 
   useEffect(() => {
-    // var ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
-    // setdataSource(ds.cloneWithRows([]));
-
 
     db.transaction((tx) => {
-      tx.executeSql('SELECT * , MAX(`created`) AS `time` FROM history_dudoan GROUP BY `so_dudoan` ORDER BY `created` DESC ' , [], (tx, results) => {
+      tx.executeSql('SELECT * FROM history_dudoan' , [], (tx, results) => {
         
         var len = results.rows.length;//chiều dài của mảng
+        console.log(len);
         if(len>0){
           var temp = [];
             for (let i = 0; i < len; ++i)
@@ -46,7 +43,7 @@ const History = () => {
         key={item.user_id}
         style={{
           margin: 5,
-          backgroundColor: "#fff",
+          backgroundColor: item.so_trung ? "#d5542d" : "#fff",
           borderRadius: 5,
           overflow: "hidden",
           shadowColor: "#000",
@@ -59,9 +56,10 @@ const History = () => {
           elevation: 5,
           padding: 15,
         }}>
-        <View style={{flexDirection: 'row'}}><Text style ={styles.dai}>Đài Dự Đoán: </Text><Text style ={styles.text}>{item.dai_dudoan_text}</Text></View>
-        <View style={{flexDirection: 'row'}}><Text style ={styles.dai}>Số Dự Đoán: </Text><Text style ={styles.text}>{item.so_dudoan}</Text></View>
-        <View style={{flexDirection: 'row'}}><Text style ={styles.dai}>Thời Gian: </Text><Text style ={styles.text}>{item.created}</Text></View>
+        <View style={{flexDirection: 'row'}}><Text style ={styles.dai, item.so_trung ? styles.dai2: '' }>Miền Dự Đoán: </Text><Text style ={styles.text, item.so_trung ? styles.dai2: '' }>{item.dai_dudoan_text}</Text></View>
+        <View style={{flexDirection: 'row'}}><Text style ={styles.dai, item.so_trung ? styles.dai2: '' }>Số Dự Đoán: </Text><Text style ={styles.text, item.so_trung ? styles.dai2: '' }>{item.so_dudoan}</Text></View>
+        <View style={{flexDirection: 'row'}}><Text style ={styles.dai, item.so_trung ? styles.dai2: '' }>Dự Đoán: </Text><Text style ={styles.text, item.so_trung ? styles.dai2: '' }>{item.so_trung}</Text></View>
+        <View style={{flexDirection: 'row'}}><Text style ={styles.dai, item.so_trung ? styles.dai2: '' }>Thời Gian: </Text><Text style ={styles.text, item.so_trung ? styles.dai2: '' }>{item.created}</Text></View>
       </View>
     );
   };
@@ -90,10 +88,10 @@ const styles = StyleSheet.create({
     alignItems: 'center', 
     justifyContent: 'center'
   },
-  dai: {
-    
+  dai2: {
+    color: '#ffffff'
   },
   text: {
     fontWeight: 'bold',
-  }
+  },
 });
