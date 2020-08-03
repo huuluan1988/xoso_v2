@@ -5,6 +5,8 @@ import {Colors} from '../components/color';
 import Feather from 'react-native-vector-icons/Feather';
 import AsyncStorage from '@react-native-community/async-storage';
 import {useNavigation} from '@react-navigation/native'
+import DraggableFlatList from "react-native-draggable-flatlist";
+
 const W = Dimensions.get('window').width;
 
 
@@ -60,7 +62,7 @@ const HomeScreen = (navigate) => {
 
   useEffect(() => {
     load();
-    loadTyleĐuoan('mienbac');
+    loadTyleDuDoan();
     getUser();
     loadUser();
 
@@ -103,7 +105,7 @@ const HomeScreen = (navigate) => {
       });
   }
 
-  const loadTyleĐuoan = async(v) => {
+  const loadTyleDuDoan = async(v) => {
     let username = await AsyncStorage.getItem('userName');
     // fetch("http://nhocbi.com/xoso/tyle_du_doan" + '?username=' + username + '&kg_mien=' + v,  {
 
@@ -118,8 +120,6 @@ const HomeScreen = (navigate) => {
         } else {
           setDataSourceMien(data)
         };
-
-        
       });
   }
 

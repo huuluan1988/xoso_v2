@@ -9,6 +9,7 @@ import {
 } from 'react-native-paper';
 
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import Ionicons from 'react-native-vector-icons/Ionicons';
 import AsyncStorage from '@react-native-community/async-storage';
 import { MyContext } from '../components/mycontext';
 const ProfileScreen = () => {
@@ -16,13 +17,16 @@ const ProfileScreen = () => {
   const [imageAvata, setAvata] = useState('');
   const [userName, setUserName] = useState('');
   const [fullName, setfullName] = React.useState("");
+  const [tong, setTong] = React.useState("");
+  const [tongTrung, setThongTrung] = useState("");
   const { value2 } = React.useContext(MyContext);
   const [stateValue2, setStateValue2] = value2;
 
-  useEffect(async() => {
+  useEffect(() => {
     
     getImgAvata();
     getUserInfo();
+    loadTyleDuDoan();
   }, []);
 
   const getImgAvata = async() => {
@@ -32,13 +36,34 @@ const ProfileScreen = () => {
     setAvata(imageAvata)
   }
 
-
   const getUserInfo = async() => {
     let fullname = await AsyncStorage.getItem('fullname');
     let username = await AsyncStorage.getItem('userName');
     setfullName(fullname);
     setUserName(username);
-}
+  }
+
+  const loadTyleDuDoan = async(v) => {
+    let username = await AsyncStorage.getItem('userName');
+    // fetch("http://nhocbi.com/xoso/tyle_du_doan" + '?username=' + username + '&kg_mien=' + v,  {
+
+      fetch("http://nhocbi.com/xoso/tyle_du_doan?username=" + username,  {
+      headers: {
+        "X-Requested-With": "XMLHttpRequest"
+      }
+    }).then(res => res.json())
+      .then(data => {
+        
+         total = 0;
+         total_trung = 0;
+          for (var i=0; i<data.length; i++) {
+              total += data[i].tong;
+              total_trung += data[i].tong_trung;
+          }
+          setTong(total);
+          setThongTrung(total_trung);
+      });
+  }
 
   return (
     <SafeAreaView style={styles.container}>
@@ -63,7 +88,7 @@ const ProfileScreen = () => {
 
       <View style={styles.userInfoSection}>
         <View style={styles.row}>
-          <Icon name="map-marker-radius" color="#777777" size={20}/>
+          <Ionicons name="ios-person" color="#777777" size={23}/>
           <Text style={{color:"#777777", marginLeft: 20}}>{fullName}</Text>
         </View>
         <View style={styles.row}>
@@ -81,11 +106,11 @@ const ProfileScreen = () => {
             borderRightColor: '#dddddd',
             borderRightWidth: 1
           }]}>
-            <Title>12</Title>
+            <Title>{tongTrung}</Title>
             <Caption>Dự đoán trúng</Caption>
           </View>
           <View style={styles.infoBox}>
-            <Title>55</Title>
+            <Title>{tong}</Title>
             <Caption>Số lần dự đoán</Caption>
           </View>
       </View>

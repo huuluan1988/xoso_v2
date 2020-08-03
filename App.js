@@ -211,7 +211,7 @@ const App = () => {
       .then(data => {
         data.map(v=>{
           saveprofile(v);
-       })
+        })
       });
   }
 

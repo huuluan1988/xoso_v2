@@ -1,5 +1,5 @@
 import React, {useState, useEffect}from 'react';
-import { View, StyleSheet } from 'react-native';
+import { View, StyleSheet, Share } from 'react-native';
 import {
     useTheme,
     Avatar,
@@ -16,8 +16,10 @@ import {
 } from '@react-navigation/drawer';
 import AsyncStorage from '@react-native-community/async-storage';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import IconMaterial from 'react-native-vector-icons/MaterialIcons';
 import { MyContext } from '../components/mycontext';
 import { AuthContext } from '../components/context';
+
 
 export function DrawerContent(props) {
 
@@ -48,6 +50,15 @@ export function DrawerContent(props) {
         let username = await AsyncStorage.getItem('userName');
         setfullName(fullname);
         setUserName(username);
+    }
+
+    const _shareTextMessage = async() => {
+        props.navigation.closeDrawer()
+        Share.share({
+            message: 'Vui lòng chia sẽ ứng dụng nếu bạn thấy hay!'
+          })
+          .then(this._showResult)
+          .catch(err => console.log(err))
     }
 
     return (
@@ -106,7 +117,7 @@ export function DrawerContent(props) {
                         <DrawerItem
                             icon={({ color, size }) => (
                                 <Icon
-                                    name="bookmark-outline"
+                                    name="history"
                                     color={color}
                                     size={size}
                                 />
@@ -114,7 +125,7 @@ export function DrawerContent(props) {
                             label="Lịch sử"
                             onPress={() => { props.navigation.navigate('History') }}
                         />
-                        <DrawerItem
+                        {/* <DrawerItem
                             icon={({ color, size }) => (
                                 <Icon
                                     name="settings-outline"
@@ -124,9 +135,20 @@ export function DrawerContent(props) {
                             )}
                             label="Cài đặt"
                             onPress={() => { props.navigation.navigate('Settings') }}
+                        /> */}
+                        <DrawerItem
+                            icon={({ color, size }) => (
+                                <IconMaterial
+                                    name="rate-review"
+                                    color={color}
+                                    size={size}
+                                />
+                            )}
+                            label="Chia sẽ"
+                            onPress={() => { _shareTextMessage() }}
                         />
                     </Drawer.Section>
-                    <Drawer.Section title="Preferences">
+                    {/* <Drawer.Section title="Preferences">
                         <TouchableRipple onPress={() => { toggleTheme() }}>
                             <View style={styles.preference}>
                                 <Text>Dark Theme</Text>
@@ -135,7 +157,7 @@ export function DrawerContent(props) {
                                 </View>
                             </View>
                         </TouchableRipple>
-                    </Drawer.Section>
+                    </Drawer.Section> */}
                 </View>
             </DrawerContentScrollView>
             <Drawer.Section style={styles.bottomDrawerSection}>
@@ -147,7 +169,7 @@ export function DrawerContent(props) {
                             size={size}
                         />
                     )}
-                    label="Sign Out"
+                    label="Thoát"
                     onPress={() => { signOut() }}
                 />
             </Drawer.Section>

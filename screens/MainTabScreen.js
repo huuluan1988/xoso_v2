@@ -73,7 +73,7 @@ const MainTabScreen = () => (
         component={MienTrungStackScreen}
         options={{
           tabBarLabel: 'Miền Trung',
-          tabBarColor: '#d02860',
+          tabBarColor: '#cc07e2',
           tabBarIcon: ({ color }) => (
             // <Icon name="ios-aperture" color={color} size={26} />
             <Image styles ={{borderRadius: 5}}
@@ -130,7 +130,7 @@ const MienBacStackScreen = ({navigation}) => (
 const MienNamStackScreen = ({navigation}) => (
   <MienNamStack.Navigator screenOptions={{
           headerStyle: {
-          backgroundColor: '#1f65ff',
+          backgroundColor: '#cc07e2',
           },
           headerTintColor: '#fff',
           headerTitleStyle: {
@@ -139,7 +139,7 @@ const MienNamStackScreen = ({navigation}) => (
       }}>
           <MienNamStack.Screen name="Miền Nam" component={MienNamScreen} options={{
           headerLeft: () => (
-              <Icon.Button name="ios-menu" size={25} backgroundColor="#1f65ff" onPress={() => navigation.openDrawer()}></Icon.Button>
+              <Icon.Button name="ios-menu" size={25} backgroundColor="#cc07e2" onPress={() => navigation.openDrawer()}></Icon.Button>
           )
           }} />
   </MienNamStack.Navigator>
@@ -148,7 +148,7 @@ const MienNamStackScreen = ({navigation}) => (
 const MienTrungStackScreen = ({navigation}) => (
 <MienTrungStack.Navigator screenOptions={{
         headerStyle: {
-        backgroundColor: '#1f65ff',
+        backgroundColor: '#f131f3',
         },
         headerTintColor: '#fff',
         headerTitleStyle: {
@@ -157,7 +157,7 @@ const MienTrungStackScreen = ({navigation}) => (
     }}>
         <MienTrungStack.Screen name="Miền Trung" component={MienTrungScreen} options={{
         headerLeft: () => (
-            <Icon.Button name="ios-menu" size={25} backgroundColor="#1f65ff" onPress={() => navigation.openDrawer()}></Icon.Button>
+            <Icon.Button name="ios-menu" size={25} backgroundColor="#f131f3" onPress={() => navigation.openDrawer()}></Icon.Button>
         )
         }} />
 </MienTrungStack.Navigator>
