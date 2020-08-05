@@ -1,13 +1,12 @@
 import React, {useState, useEffect}from 'react';
-import { View, StyleSheet, Share } from 'react-native';
+import { View, StyleSheet, Share, Linking } from 'react-native';
 import {
     useTheme,
     Avatar,
     Title,
     Caption,
     Paragraph,
-    Drawer,
-    TouchableRipple
+    Drawer
 } from 'react-native-paper';
 import { Container, Header, Content, Button, ListItem, Text,  Left, Body, Right, Switch } from 'native-base';
 import {
@@ -19,7 +18,6 @@ import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import IconMaterial from 'react-native-vector-icons/MaterialIcons';
 import { MyContext } from '../components/mycontext';
 import { AuthContext } from '../components/context';
-
 
 export function DrawerContent(props) {
 
@@ -53,7 +51,7 @@ export function DrawerContent(props) {
     }
 
     const _shareTextMessage = async() => {
-        props.navigation.closeDrawer()
+        props.navigation.closeDrawer();
         Share.share({
             message: 'Vui lòng chia sẽ ứng dụng nếu bạn thấy hay!'
           })
@@ -61,20 +59,31 @@ export function DrawerContent(props) {
           .catch(err => console.log(err))
     }
 
+    const _website =() => {
+        url = "https://www.facebook.com/groups/soxo.lode";
+
+        Linking.openURL(url).catch(() => this.dropdown.alertWithType("error", "Sorry!", "Could not open"));
+        props.navigation.closeDrawer();
+      }
+
+    const capitalize =(str) => {
+        return str.charAt(0).toUpperCase();
+    }
+
     return (
         <View style={{ flex: 1 }}>
             <DrawerContentScrollView {...props}>
                 <View style={styles.drawerContent}>
                     <View style={styles.userInfoSection}>
-                        <View style={{ flexDirection: 'row', marginTop: 15 ,borderBottomWidth: 1, borderBottomColor: '#f2f2f2', paddingBottom: 15}}>
+                        <View style={{flexDirection: 'row', marginTop: 15 ,borderBottomWidth: 1, borderBottomColor: '#f2f2f2', paddingBottom: 15}}>
                             <Avatar.Image
                                 source={{
-                                    uri: stateValue2 ? stateValue2 : imageAvata,
+                                    uri: stateValue2 ? stateValue2 : capitalize(userName),
                                 }}
                                 size={50}
                             />
                             <View style={{ marginLeft: 15, flexDirection: 'column' }}>
-                            <Title style={styles.title}>{fullName}</Title>
+                            <Title style={styles.title}>{fullName ? fullName : capitalize(userName)}</Title>
                             <Caption style={styles.caption}>{userName}</Caption>
                             </View>
                         </View>
@@ -147,7 +156,22 @@ export function DrawerContent(props) {
                             label="Chia sẽ"
                             onPress={() => { _shareTextMessage() }}
                         />
-                    </Drawer.Section>
+
+                        <DrawerItem
+                            icon={({ color, size }) => (
+                                <Icon
+                                    name="web"
+                                    color={color}
+                                    size={size}
+                                />
+                            )}
+                            label="Fanpage"
+                            onPress={() => { _website() }}
+                        />
+
+                        </Drawer.Section>
+
+                        
                     {/* <Drawer.Section title="Preferences">
                         <TouchableRipple onPress={() => { toggleTheme() }}>
                             <View style={styles.preference}>
