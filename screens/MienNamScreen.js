@@ -9,7 +9,12 @@ const MienNamScreen = () => {
 
   useEffect(() => {
     getUser();
+    
   }, []);
+
+  const onMessage1 = (m) => {
+    alert(m.nativeEvent.data);
+  }
 
   const getUser = async() => {
     let userNameinfo = await AsyncStorage.getItem('userName');
@@ -24,7 +29,7 @@ const MienNamScreen = () => {
                 baseUrl: '',
               }}
               startInLoadingState={true}
-
+              onMessage={m => onMessage1(m)} 
             />
       </View>
     );

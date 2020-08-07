@@ -5,7 +5,6 @@ import {Colors} from '../components/color';
 import Feather from 'react-native-vector-icons/Feather';
 import AsyncStorage from '@react-native-community/async-storage';
 import {useNavigation} from '@react-navigation/native'
-import DraggableFlatList from "react-native-draggable-flatlist";
 
 const W = Dimensions.get('window').width;
 
