@@ -95,6 +95,7 @@ const HomeStackScreen = ({navigation}) => (
         backgroundColor: '#009387',
         },
         headerTintColor: '#fff',
+        headerTitleAlign: 'center',
         headerTitleStyle: {
         fontWeight: 'bold',
         fontSize: 15,
@@ -103,7 +104,9 @@ const HomeStackScreen = ({navigation}) => (
         <HomeStack.Screen name="Home"  component={HomeScreen} options={{
         title:'Xổ Số Lô Đề Nhanh',
         headerLeft: () => (
+          <View style={{marginLeft:10}}>
             <Icon.Button name="ios-menu" size={25} backgroundColor="#009387" onPress={() => navigation.openDrawer()}></Icon.Button>
+          </View>
         )
         }} />
 </HomeStack.Navigator>
@@ -115,13 +118,16 @@ const MienBacStackScreen = ({navigation}) => (
         backgroundColor: '#1f65ff',
         },
         headerTintColor: '#fff',
+        headerTitleAlign: 'center',
         headerTitleStyle: {
         fontWeight: 'bold'
         }
     }}>
         <MienBacStack.Screen name="Miền Bắc" component={MienBacScreen} options={{
         headerLeft: () => (
+          <View style={{marginLeft:10}}>
             <Icon.Button name="ios-menu" size={25} backgroundColor="#1f65ff" onPress={() => navigation.openDrawer()}></Icon.Button>
+          </View>
         )
         }} />
 </MienBacStack.Navigator>
@@ -133,13 +139,16 @@ const MienNamStackScreen = ({navigation}) => (
           backgroundColor: '#cc07e2',
           },
           headerTintColor: '#fff',
+          headerTitleAlign: 'center',
           headerTitleStyle: {
           fontWeight: 'bold'
           }
       }}>
           <MienNamStack.Screen name="Miền Nam" component={MienNamScreen} options={{
           headerLeft: () => (
+            <View style={{marginLeft:10}}>
               <Icon.Button name="ios-menu" size={25} backgroundColor="#cc07e2" onPress={() => navigation.openDrawer()}></Icon.Button>
+            </View>
           )
           }} />
   </MienNamStack.Navigator>
@@ -151,13 +160,16 @@ const MienTrungStackScreen = ({navigation}) => (
         backgroundColor: '#f131f3',
         },
         headerTintColor: '#fff',
+        headerTitleAlign: 'center',
         headerTitleStyle: {
         fontWeight: 'bold'
         }
     }}>
         <MienTrungStack.Screen name="Miền Trung" component={MienTrungScreen} options={{
         headerLeft: () => (
+          <View style={{marginLeft:10}}>
             <Icon.Button name="ios-menu" size={25} backgroundColor="#f131f3" onPress={() => navigation.openDrawer()}></Icon.Button>
+          </View>
         )
         }} />
 </MienTrungStack.Navigator>

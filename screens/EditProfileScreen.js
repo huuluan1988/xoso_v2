@@ -30,7 +30,8 @@ const EditProfileScreen = () => {
   const [city, setCity] = React.useState("");
   const { colors } = useTheme();
 
-  const { textmo } = React.useContext(AuthContext);
+  const { avataState } = React.useContext(AuthContext);
+  const { fullNameState } = React.useContext(AuthContext);
 
   const [data, setData] = React.useState({
     fullname: '',
@@ -124,7 +125,6 @@ const EditProfileScreen = () => {
     let userCity = await AsyncStorage.getItem('city');
     setfullName(fullName);
     setCity(userCity);
-    console.log('luan55', userName);
   }
 
   const showUpdateToast = async () => {
@@ -159,8 +159,8 @@ const EditProfileScreen = () => {
     </View>
   );
 
-  const saveProfile = async (fullname, city) => {
-    if (fullname != '') {
+  const saveProfile = async (fullnameInput, cityInput) => {
+    if (fullnameInput != '' || fullName) {
       try {
         await AsyncStorage.setItem('imageAvata', imageAvata ? imageAvata : image);
       } catch (e) {
@@ -168,12 +168,13 @@ const EditProfileScreen = () => {
       };
 
       try {
-        await AsyncStorage.setItem('fullname', fullname);
+        await AsyncStorage.setItem('fullname', fullnameInput);
       } catch (e) {
         console.log(e);
       };
 
-      textmo(imageAvata ? imageAvata : image);
+      avataState(imageAvata ? imageAvata : image);
+      fullNameState(fullnameInput ? fullnameInput : fullName);
 
       let userName = await AsyncStorage.getItem('userName');
 
@@ -185,8 +186,8 @@ const EditProfileScreen = () => {
         },
         body: JSON.stringify({
           username: userName,
-          fullname: fullname,
-          city: city,
+          fullname: fullnameInput ? fullnameInput : fullName,
+          city: cityInput ? cityInput : city,
           image: imageAvata ? imageAvata : image,
         })
       })
@@ -195,8 +196,8 @@ const EditProfileScreen = () => {
           if (responseJson.Code == 1) {
             console.log(responseJson);
             showUpdateToast();
-            setfullName(fullname);
-            setCity(city);
+            setfullName(fullnameInput ? fullnameInput : fullName );
+            setCity(cityInput ? cityInput : city);
           } else {
             console.log(responseJson);
           }

@@ -58,8 +58,8 @@ const App = () => {
   const [theme1, setTheme] = useState('Light');
 
   const [value, setValue] = React.useState("foo");
-  const [value2, setValue2] = React.useState("");
-  const [userNameA, setUserName] = React.useState("");
+  const [avataUser, setAvataUser] = React.useState("");
+  const [fullNameUser, setFullNameUser] = React.useState("");
 
   const initialLoginState = {
     isLoading: true,
@@ -132,7 +132,6 @@ const App = () => {
       // setIsLoading(false);
       const userToken = String(foundUser[0].userToken);
       const userName = foundUser[0].username;
-      
       try {
         await AsyncStorage.setItem('userToken', userToken);
       } catch(e) {
@@ -146,6 +145,7 @@ const App = () => {
       // setIsLoading(false);
       try {
         await AsyncStorage.removeItem('userToken');
+        await AsyncStorage.removeItem('userName');
       } catch(e) {
         console.log(e);
       }
@@ -159,9 +159,11 @@ const App = () => {
       setIsDarkTheme( isDarkTheme => !isDarkTheme );
     },
 
-    textmo: async(v) => {
-      setValue2(v);
-      // alert('aaaa');
+    avataState: async(v) => {
+      setAvataUser(v);
+    },
+    fullNameState: async(v) => {
+      setFullNameUser(v);
     },
 
   }), []);
@@ -180,7 +182,7 @@ const App = () => {
       dispatch({ type: 'RETRIEVE_TOKEN', token: userToken });
       try {
         let imageAvata = await AsyncStorage.getItem('imageAvata');
-        setValue2(imageAvata);
+        setAvataUser(imageAvata);
       } catch(e) {
         console.log(e);
       }
@@ -350,7 +352,7 @@ const App = () => {
     <PaperProvider theme={theme}>
     <AuthContext.Provider value={authContext}>
     <MyContext.Provider
-      value={{ value: [value, setValue], value2: [value2, setValue2] }}
+      value={{ fullNameUser: [fullNameUser, setFullNameUser], avataUser: [avataUser, setAvataUser] }}
     >
     <NavigationContainer theme={theme}>
       { loginState.userToken !== null ? (
@@ -379,13 +381,16 @@ export default App;
             backgroundColor: '#1f65ff',
             },
             headerTintColor: '#fff',
+            headerTitleAlign: 'center',
             headerTitleStyle: {
             fontWeight: 'bold'
             }
         }}>
             <HistoryStack.Screen name="Lịch Sử" component={HistoryScreen} options={{
             headerLeft: () => (
+              <View style={{marginLeft:10}}>
                 <Icon.Button name="ios-menu" size={25} backgroundColor="#1f65ff" onPress={() => navigation.openDrawer()}></Icon.Button>
+              </View>
             )
             }} />
     </HistoryStack.Navigator>
@@ -398,13 +403,16 @@ export default App;
               backgroundColor: '#1f65ff',
               },
               headerTintColor: '#fff',
+              headerTitleAlign: 'center',
               headerTitleStyle: {
               fontWeight: 'bold'
               }
           }}>
               <SettingStack.Screen name="Cài đặt" component={SettingsScreen} options={{
               headerLeft: () => (
+                <View style={{marginLeft:10}}>
                   <Icon.Button name="ios-menu" size={25} backgroundColor="#1f65ff" onPress={() => navigation.openDrawer()}></Icon.Button>
+                </View>
               )
               }} />
       </SettingStack.Navigator>
@@ -423,6 +431,7 @@ export default App;
             elevation: 0, // Android
           },
           headerTintColor: colors.text,
+          headerTitleAlign: 'center',
         }}>
         <ProfileStack.Screen
           name="Profile"

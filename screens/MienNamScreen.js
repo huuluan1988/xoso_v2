@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, Button, StyleSheet } from 'react-native';
+import { View, Text, Button, StyleSheet, Alert } from 'react-native';
 import { WebView } from 'react-native-webview';
 import AsyncStorage from '@react-native-community/async-storage';
+import {useNavigation} from '@react-navigation/native'
 
 const MienNamScreen = () => {
-
+  const navigation = useNavigation();
   const [userName, setUserName] = useState('');
 
   useEffect(() => {
@@ -12,14 +13,29 @@ const MienNamScreen = () => {
     
   }, []);
 
-  const onMessage1 = (m) => {
-    alert(m.nativeEvent.data);
+  const onMessage = (m) => {
+    // alert(m.nativeEvent.data);
+    if(m.nativeEvent.data = 'not_username'){
+      showAlert();
+    }
   }
 
   const getUser = async() => {
     let userNameinfo = await AsyncStorage.getItem('userName');
     setUserName(userNameinfo)
   }
+
+  const showAlert=() =>{
+    Alert.alert(
+      'Thông báo!',
+      'Xin vui lòng đăng nhập để tham gia dự đoán?',
+      [
+        {text: 'Thoát'},
+        {text: 'Đồng ý', onPress: () => navigation.navigate('SplashScreen')},
+      ],
+      { cancelable: false }
+    );
+}
 
     return (
       <View style={{ flex: 1 }}>
@@ -29,7 +45,7 @@ const MienNamScreen = () => {
                 baseUrl: '',
               }}
               startInLoadingState={true}
-              onMessage={m => onMessage1(m)} 
+              onMessage={m => onMessage(m)} 
             />
       </View>
     );

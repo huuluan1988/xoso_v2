@@ -19,14 +19,19 @@ import IconMaterial from 'react-native-vector-icons/MaterialIcons';
 import { MyContext } from '../components/mycontext';
 import { AuthContext } from '../components/context';
 
+// import SignInScreen from './SignInScreen';
+
 export function DrawerContent(props) {
 
     const paperTheme = useTheme();
 
     const { signOut, toggleTheme } = React.useContext(AuthContext);
 
-    const { value2 } = React.useContext(MyContext);
-    const [stateValue2, setStateValue2] = value2;
+    const { avataUser } = React.useContext(MyContext);
+    const [stateAvataUser, setStateAvataUser] = avataUser;
+    const { fullNameUser } = React.useContext(MyContext);
+    const [stateFullNameUser, setStateFullNameUser] = fullNameUser;
+
     const [imageAvata, setAvata] = useState('https://nhocbi.com/public/static/templates/frontend/xoso/logo.png');
     const [userName, setUserName] = useState('');
     const [fullName, setfullName] = React.useState("");
@@ -78,12 +83,12 @@ export function DrawerContent(props) {
                         <View style={{flexDirection: 'row', marginTop: 15 ,borderBottomWidth: 1, borderBottomColor: '#f2f2f2', paddingBottom: 15}}>
                             <Avatar.Image
                                 source={{
-                                    uri: stateValue2 ? stateValue2 : capitalize(userName),
+                                    uri: stateAvataUser ? stateAvataUser : capitalize(userName),
                                 }}
                                 size={50}
                             />
                             <View style={{ marginLeft: 15, flexDirection: 'column' }}>
-                            <Title style={styles.title}>{fullName ? fullName : capitalize(userName)}</Title>
+                            <Title style={styles.title}>{stateFullNameUser ? stateFullNameUser : fullName ? fullName : capitalize(userName)}</Title>
                             <Caption style={styles.caption}>{userName}</Caption>
                             </View>
                         </View>
@@ -153,7 +158,7 @@ export function DrawerContent(props) {
                                     size={size}
                                 />
                             )}
-                            label="Chia sẽ"
+                            label="Chia sẻ"
                             onPress={() => { _shareTextMessage() }}
                         />
 
@@ -184,7 +189,7 @@ export function DrawerContent(props) {
                     </Drawer.Section> */}
                 </View>
             </DrawerContentScrollView>
-            <Drawer.Section style={styles.bottomDrawerSection}>
+            {userName ? <Drawer.Section style={styles.bottomDrawerSection}>
                 <DrawerItem
                     icon={({ color, size }) => (
                         <Icon
@@ -196,7 +201,20 @@ export function DrawerContent(props) {
                     label="Thoát"
                     onPress={() => { signOut() }}
                 />
-            </Drawer.Section>
+            </Drawer.Section> : 
+            <Drawer.Section style={styles.bottomDrawerSection}>
+            <DrawerItem
+                icon={({ color, size }) => (
+                    <Icon
+                        name="exit-to-app"
+                        color={color}
+                        size={size}
+                    />
+                )}
+                label="Đăng nhập"
+                onPress={() => { props.navigation.navigate('SignInScreen') }}
+            />
+        </Drawer.Section> }
         </View>
     );
 }

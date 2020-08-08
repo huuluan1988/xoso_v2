@@ -10,17 +10,23 @@ import {
 
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import MaterialIcons from 'react-native-vector-icons/FontAwesome';
 import AsyncStorage from '@react-native-community/async-storage';
 import { MyContext } from '../components/mycontext';
 const ProfileScreen = () => {
 
   const [imageAvata, setAvata] = useState('');
   const [userName, setUserName] = useState('');
+  const [userCity, setUserCity] = useState('');
   const [fullName, setfullName] = React.useState("");
   const [tong, setTong] = React.useState("");
   const [tongTrung, setThongTrung] = useState("");
-  const { value2 } = React.useContext(MyContext);
-  const [stateValue2, setStateValue2] = value2;
+
+  const { avataUser } = React.useContext(MyContext);
+    const [stateAvataUser, setStateAvataUser] = avataUser;
+    const { fullNameUser } = React.useContext(MyContext);
+    const [stateFullNameUser, setStateFullNameUser] = fullNameUser;
+    
 
   useEffect(() => {
     
@@ -39,14 +45,14 @@ const ProfileScreen = () => {
   const getUserInfo = async() => {
     let fullname = await AsyncStorage.getItem('fullname');
     let username = await AsyncStorage.getItem('userName');
+    let city = await AsyncStorage.getItem('city');
     setfullName(fullname);
     setUserName(username);
+    setUserCity(city);
   }
 
   const loadTyleDuDoan = async(v) => {
     let username = await AsyncStorage.getItem('userName');
-    // fetch("http://nhocbi.com/xoso/tyle_du_doan" + '?username=' + username + '&kg_mien=' + v,  {
-
       fetch("http://nhocbi.com/xoso/tyle_du_doan?username=" + username,  {
       headers: {
         "X-Requested-With": "XMLHttpRequest"
@@ -72,7 +78,7 @@ const ProfileScreen = () => {
         <View style={{flexDirection: 'row', marginTop: 15}}>
           <Avatar.Image 
             source={{
-              uri: stateValue2 ? stateValue2 : imageAvata,
+              uri: stateAvataUser ? stateAvataUser : imageAvata,
             }}
             size={80}
           />
@@ -80,7 +86,7 @@ const ProfileScreen = () => {
             <Title style={[styles.title, {
               marginTop:15,
               marginBottom: 5,
-            }]}>{fullName}</Title>
+            }]}>{stateFullNameUser ? stateFullNameUser : fullName}</Title>
             <Caption style={styles.caption}>{userName}</Caption>
           </View>
         </View>
@@ -89,16 +95,17 @@ const ProfileScreen = () => {
       <View style={styles.userInfoSection}>
         <View style={styles.row}>
           <Ionicons name="ios-person" color="#777777" size={23}/>
-          <Text style={{color:"#777777", marginLeft: 20}}>{fullName}</Text>
+          <Text style={{color:"#777777", marginLeft: 20}}>{stateFullNameUser ? stateFullNameUser : fullName}</Text>
+        </View>
+        <View style={styles.row}>
+          <Icon name="map-marker" color="#777777" size={20}/>
+          <Text style={{color:"#777777", marginLeft: 20}}>{userCity ? userCity : '???'} </Text>
         </View>
         <View style={styles.row}>
           <Icon name="phone" color="#777777" size={20}/>
           <Text style={{color:"#777777", marginLeft: 20}}>???</Text>
         </View>
-        <View style={styles.row}>
-          <Icon name="email" color="#777777" size={20}/>
-          <Text style={{color:"#777777", marginLeft: 20}}>???</Text>
-        </View>
+        
       </View>
 
       <View style={styles.infoBoxWrapper}>

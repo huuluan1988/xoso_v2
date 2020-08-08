@@ -115,11 +115,11 @@ const SignInScreen = ({navigation}) => {
             if(password){
                 loginCall(userName, password);
             }else{
-              Alert.alert("Please enter mat khau");
+              Alert.alert("Xin vui lòng nhập mật khẩu");
             }
             
           }else{
-            Alert.alert("Please enter username");
+            Alert.alert("Xin vui lòng nhập tài khoản");
           }
 
         //   signIn(userName, password);
