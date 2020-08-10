@@ -216,7 +216,6 @@ const App = () => {
     }).then(res => res.json())
       .then(data => {
         data.map(v=>{
-          console.log(v);
           saveprofile(v);
         })
       });
