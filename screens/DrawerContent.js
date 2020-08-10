@@ -37,22 +37,24 @@ export function DrawerContent(props) {
     const [fullName, setfullName] = React.useState("");
     useEffect(() => {
         
-        getImgAvata();
+        // getImgAvata();
         getUserInfo();
         
     }, []);
 
-    const getImgAvata = async() => {
-        let imageAvata = await AsyncStorage.getItem('imageAvata');
-        console.log('luan111', imageAvata);
-        setAvata(imageAvata)
-    }
+    // const getImgAvata = async() => {
+    //     let imageAvata = await AsyncStorage.getItem('imageAvata');
+    //     console.log('luan111', imageAvata);
+    //     setAvata(imageAvata)
+    // }
 
     const getUserInfo = async() => {
         let fullname = await AsyncStorage.getItem('fullname');
         let username = await AsyncStorage.getItem('userName');
+        let imageAvata = await AsyncStorage.getItem('imageAvata');
         setfullName(fullname);
         setUserName(username);
+        setAvata(imageAvata);
     }
 
     const _shareTextMessage = async() => {
@@ -72,7 +74,9 @@ export function DrawerContent(props) {
       }
 
     const capitalize =(str) => {
-        return str.charAt(0).toUpperCase();
+        if (!str == '') {
+            return str.charAt(0).toUpperCase();
+        }
     }
 
     return (
@@ -83,13 +87,13 @@ export function DrawerContent(props) {
                         <View style={{flexDirection: 'row', marginTop: 15 ,borderBottomWidth: 1, borderBottomColor: '#f2f2f2', paddingBottom: 15}}>
                             <Avatar.Image
                                 source={{
-                                    uri: stateAvataUser ? stateAvataUser : capitalize(userName),
+                                    uri: stateAvataUser ? stateAvataUser : imageAvata ? imageAvata :  'https://nhocbi.com/public/static/templates/frontend/xoso/logo.png',
                                 }}
                                 size={50}
                             />
                             <View style={{ marginLeft: 15, flexDirection: 'column' }}>
-                            <Title style={styles.title}>{stateFullNameUser ? stateFullNameUser : fullName ? fullName : capitalize(userName)}</Title>
-                            <Caption style={styles.caption}>{userName}</Caption>
+                            <Title style={styles.title}>{stateFullNameUser ? stateFullNameUser : fullName ? fullName : 'Dò Xổ Số - Lô Đề'}</Title>
+                            <Caption style={styles.caption}>{userName ? userName : 'Nhanh nhất trong ngày'}</Caption>
                             </View>
                         </View>
 
@@ -117,7 +121,7 @@ export function DrawerContent(props) {
                             onPress={() => { props.navigation.navigate('Home') }}
                         />
 
-                        <DrawerItem
+                        {userName ? <DrawerItem
                             icon={({ color, size }) => (
                                 <Icon
                                     name="account-outline"
@@ -127,8 +131,8 @@ export function DrawerContent(props) {
                             )}
                             label="Profile"
                             onPress={() => { props.navigation.navigate('Profile') }}
-                        />
-                        <DrawerItem
+                        /> : null }
+                        {userName ? <DrawerItem
                             icon={({ color, size }) => (
                                 <Icon
                                     name="history"
@@ -138,7 +142,7 @@ export function DrawerContent(props) {
                             )}
                             label="Lịch sử"
                             onPress={() => { props.navigation.navigate('History') }}
-                        />
+                        /> : null }
                         {/* <DrawerItem
                             icon={({ color, size }) => (
                                 <Icon

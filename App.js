@@ -146,6 +146,9 @@ const App = () => {
       try {
         await AsyncStorage.removeItem('userToken');
         await AsyncStorage.removeItem('userName');
+        await AsyncStorage.removeItem('imageAvata');
+        await AsyncStorage.removeItem('fullname');
+        await AsyncStorage.removeItem('city');
       } catch(e) {
         console.log(e);
       }
@@ -180,12 +183,13 @@ const App = () => {
         console.log(e);
       }
       dispatch({ type: 'RETRIEVE_TOKEN', token: userToken });
-      try {
-        let imageAvata = await AsyncStorage.getItem('imageAvata');
-        setAvataUser(imageAvata);
-      } catch(e) {
-        console.log(e);
-      }
+      
+      // try {
+      //   let imageAvata = await AsyncStorage.getItem('imageAvata');
+      //   setAvataUser(imageAvata);
+      // } catch(e) {
+      //   console.log(e);
+      // }
 
       
     
@@ -212,6 +216,7 @@ const App = () => {
     }).then(res => res.json())
       .then(data => {
         data.map(v=>{
+          console.log(v);
           saveprofile(v);
         })
       });
@@ -243,6 +248,7 @@ const App = () => {
   const saveprofile = async(v) =>  {
     await AsyncStorage.setItem('fullname', v.fullname);
     await AsyncStorage.setItem('city', v.city);
+    await AsyncStorage.setItem('imageAvata', v.image);
   }
 
 

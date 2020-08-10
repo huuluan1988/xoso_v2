@@ -71,6 +71,7 @@ const HomeScreen = (navigate) => {
   const getUser = async() => {
     let username = await AsyncStorage.getItem('userName');
     setUserName(username)
+    
   }
 
   const load = async() => {
