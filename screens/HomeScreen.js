@@ -43,7 +43,7 @@ const ItemField = ({image, title, total_du_doan, total_du_doan_trung, link}) => 
             {title}
           </TextView>
           <TextView style={styles.textDesc}>Số lần dự đoán : {total_du_doan}</TextView>
-          <TextView style={styles.textDesc}>Tỷ lệ trúng: {((total_du_doan_trung * 100) / (total_du_doan != 0 ? total_du_doan : 1) ).toFixed(2)} %</TextView>
+          <TextView style={styles.textDesc}>Tỷ lệ trúng: {((total_du_doan_trung * 100) / (total_du_doan != 0 ? total_du_doan : 1)).toFixed(2)} %</TextView>
         </Block>
         <Button style={styles.btn}>
           <Feather name="chevron-right" color={Colors.blue} size={30} />
