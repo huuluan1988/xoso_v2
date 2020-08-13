@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { View, Text, Button, StyleSheet, Alert } from 'react-native';
 import { WebView } from 'react-native-webview';
 import AsyncStorage from '@react-native-community/async-storage';
-import {useNavigation} from '@react-navigation/native'
+import {useNavigation} from '@react-navigation/native';
 
 const MienNamScreen = () => {
   const navigation = useNavigation();
@@ -14,7 +14,6 @@ const MienNamScreen = () => {
   }, []);
 
   const onMessage = (m) => {
-    // alert(m.nativeEvent.data);
     if(m.nativeEvent.data = 'not_username'){
       showAlert();
     }
@@ -31,11 +30,11 @@ const MienNamScreen = () => {
       'Xin vui lòng đăng nhập để tham gia dự đoán?',
       [
         {text: 'Thoát'},
-        {text: 'Đồng ý', onPress: () => navigation.navigate('SplashScreen')},
+        {text: 'Đồng ý', onPress: () => navigation.navigate('SignInScreen')},
       ],
       { cancelable: false }
     );
-}
+  }
 
     return (
       <View style={{ flex: 1 }}>
