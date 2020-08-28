@@ -64,8 +64,6 @@ const HomeScreen = (navigate) => {
     loadTyleDuDoan();
     getUser();
     loadUser();
-
-    
   }, []);
 
   const getUser = async() => {

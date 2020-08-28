@@ -172,7 +172,6 @@ const EditProfileScreen = () => {
       } catch (e) {
         console.log(e);
       };
-
       avataState(imageAvata ? imageAvata : image);
       fullNameState(fullnameInput ? fullnameInput : fullName);
 

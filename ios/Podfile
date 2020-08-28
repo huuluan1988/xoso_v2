@@ -42,6 +42,7 @@ target 'XosoHuuLuan' do
 
   pod 'react-native-sqlite-storage', :path => '../node_modules/react-native-sqlite-storage'
 
+
   target 'XosoHuuLuanTests' do
     inherit! :search_paths
     # Pods for testing

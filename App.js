@@ -172,7 +172,6 @@ const App = () => {
   }), []);
 
   useEffect(() => {
-
     setTimeout(async() => {
       // setIsLoading(false);
       let userToken;
@@ -196,6 +195,7 @@ const App = () => {
       // console.log('user token: ', userToken);
       loadUser();
       loadHistory();
+      loadHistoryDaiXoSo();
 
       checkPermission();
       createNotificationListeners(); //add this line
@@ -243,6 +243,21 @@ const App = () => {
       });
   }
 
+  const loadHistoryDaiXoSo = async() => {
+
+    fetch("https://nhocbi.com/xoso/get_lich_su_xoso?kq_mien=mientrung", {
+      headers: {
+        "X-Requested-With": "XMLHttpRequest"
+      }
+    }).then(res => res.json())
+      .then(data => {
+        data.map(v=>{
+          db.transaction(function (tx) {
+            tx.executeSql('INSERT INTO history_xoso (id_mien, content, date, created) VALUES (?,?,?,?)', [v.mien, v.content, v.date, v.created]);
+          });
+       })
+      });
+  }
 
   const saveprofile = async(v) =>  {
     await AsyncStorage.setItem('fullname', v.fullname);

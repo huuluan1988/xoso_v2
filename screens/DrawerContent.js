@@ -37,16 +37,8 @@ export function DrawerContent(props) {
     const [fullName, setfullName] = React.useState("");
     useEffect(() => {
         
-        // getImgAvata();
         getUserInfo();
-        
     }, []);
-
-    // const getImgAvata = async() => {
-    //     let imageAvata = await AsyncStorage.getItem('imageAvata');
-    //     console.log('luan111', imageAvata);
-    //     setAvata(imageAvata)
-    // }
 
     const getUserInfo = async() => {
         let fullname = await AsyncStorage.getItem('fullname');
@@ -65,6 +57,12 @@ export function DrawerContent(props) {
           .then(this._showResult)
           .catch(err => console.log(err))
     }
+
+    const _referenceApps =() => {
+        url = "https://play.google.com/store/apps/details?id=com.huuluan.xoso";
+        Linking.openURL(url).catch(() => this.dropdown.alertWithType("error", "Sorry!", "Could not open"));
+        this.props.navigation.dispatch(DrawerActions.closeDrawer());
+      }
 
     const _website =() => {
         url = "https://www.facebook.com/groups/soxo.lode";
@@ -143,21 +141,21 @@ export function DrawerContent(props) {
                             label="Lịch sử"
                             onPress={() => { props.navigation.navigate('History') }}
                         /> : null }
-                        {/* <DrawerItem
-                            icon={({ color, size }) => (
-                                <Icon
-                                    name="settings-outline"
-                                    color={color}
-                                    size={size}
-                                />
-                            )}
-                            label="Cài đặt"
-                            onPress={() => { props.navigation.navigate('Settings') }}
-                        /> */}
                         <DrawerItem
                             icon={({ color, size }) => (
                                 <IconMaterial
                                     name="rate-review"
+                                    color={color}
+                                    size={size}
+                                />
+                            )}
+                            label="Đánh giá ứng dụng"
+                            onPress={() => { _referenceApps() }}
+                        />
+                        <DrawerItem
+                            icon={({ color, size }) => (
+                                <IconMaterial
+                                    name="share"
                                     color={color}
                                     size={size}
                                 />
