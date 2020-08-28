@@ -217,6 +217,7 @@ const App = () => {
       .then(data => {
         data.map(v=>{
           saveprofile(v);
+          console.log(v);
         })
       });
   }
@@ -245,15 +246,28 @@ const App = () => {
 
   const loadHistoryDaiXoSo = async() => {
 
-    fetch("https://nhocbi.com/xoso/get_lich_su_xoso?kq_mien=mientrung", {
+    fetch("https://nhocbi.com/xoso/get_lich_su_xoso?kq_mien=mienbac", {
       headers: {
         "X-Requested-With": "XMLHttpRequest"
       }
     }).then(res => res.json())
       .then(data => {
         data.map(v=>{
+          // db.transaction(function (tx) {
+          //   tx.executeSql('UPDATE INTO history_xoso (id_mien, content, date, created) VALUES (?,?,?,?)', [v.mien, v.content, v.date, v.created]);
+          // });
+
+    //       let updateQuery = await this.ExecuteQuery('UPDATE history_xoso SET content = ? , date = ?, created = ? WHERE id_mien = ?', ["Doctor", "Strange", "mientrung"]);
+
+    // console.log(updateQuery);
+
           db.transaction(function (tx) {
-            tx.executeSql('INSERT INTO history_xoso (id_mien, content, date, created) VALUES (?,?,?,?)', [v.mien, v.content, v.date, v.created]);
+            tx.executeSql('UPDATE history_xoso SET content=?, date=?, created=? WHERE id_mien=?',
+              [v.content, v.date, v.created, 'mienbac'],
+              (tx, results) => {
+                console.log(results);
+              }
+            );
           });
        })
       });

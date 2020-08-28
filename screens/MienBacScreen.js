@@ -51,7 +51,7 @@ const MienBacScreen = () => {
         
         var len = results.rows.length;//chiều dài của mảng
         console.log(results.rows.item(0).id_mien);
-        if(len>0){
+        if(results.rows.item(0).id_mien == 'mienbac'){
           
         }
       });
