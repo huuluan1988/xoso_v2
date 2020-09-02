@@ -37,7 +37,6 @@ import AsyncStorage from '@react-native-community/async-storage';
 import firebase from 'react-native-firebase';
 import Icon from 'react-native-vector-icons/Ionicons';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-
 import {useTheme} from 'react-native-paper';
 
 const ProfileStack = createStackNavigator();
@@ -183,16 +182,6 @@ const App = () => {
       }
       dispatch({ type: 'RETRIEVE_TOKEN', token: userToken });
       
-      // try {
-      //   let imageAvata = await AsyncStorage.getItem('imageAvata');
-      //   setAvataUser(imageAvata);
-      // } catch(e) {
-      //   console.log(e);
-      // }
-
-      
-    
-      // console.log('user token: ', userToken);
       loadUser();
       loadHistory();
       loadHistoryDaiXoSo();
@@ -201,8 +190,6 @@ const App = () => {
       createNotificationListeners(); //add this line
       
     }, 100);
-    
-      
    
   }, []);
 
@@ -217,7 +204,6 @@ const App = () => {
       .then(data => {
         data.map(v=>{
           saveprofile(v);
-          console.log(v);
         })
       });
   }
@@ -246,28 +232,15 @@ const App = () => {
 
   const loadHistoryDaiXoSo = async() => {
 
-    fetch("https://nhocbi.com/xoso/get_lich_su_xoso?kq_mien=mienbac", {
+    fetch("https://nhocbi.com/xoso/get_lich_su_xoso?kq_mien=mientrung", {
       headers: {
         "X-Requested-With": "XMLHttpRequest"
       }
     }).then(res => res.json())
       .then(data => {
         data.map(v=>{
-          // db.transaction(function (tx) {
-          //   tx.executeSql('UPDATE INTO history_xoso (id_mien, content, date, created) VALUES (?,?,?,?)', [v.mien, v.content, v.date, v.created]);
-          // });
-
-    //       let updateQuery = await this.ExecuteQuery('UPDATE history_xoso SET content = ? , date = ?, created = ? WHERE id_mien = ?', ["Doctor", "Strange", "mientrung"]);
-
-    // console.log(updateQuery);
-
           db.transaction(function (tx) {
-            tx.executeSql('UPDATE history_xoso SET content=?, date=?, created=? WHERE id_mien=?',
-              [v.content, v.date, v.created, 'mienbac'],
-              (tx, results) => {
-                console.log(results);
-              }
-            );
+            tx.executeSql('INSERT INTO history_xoso (id_mien, content, date, created) VALUES (?,?,?,?)', [v.mien, v.content, v.date, v.created]);
           });
        })
       });

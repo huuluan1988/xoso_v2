@@ -3,19 +3,9 @@ import { View, Text, Button, StyleSheet, Alert } from 'react-native';
 import { WebView } from 'react-native-webview';
 import AsyncStorage from '@react-native-community/async-storage';
 import {useNavigation} from '@react-navigation/native';
-<<<<<<< Updated upstream
-<<<<<<< HEAD
-
-const MienNamScreen = () => {
-=======
 import {useNetInfo} from "@react-native-community/netinfo";
 const MienNamScreen = () => {
   const netInfo = useNetInfo();
->>>>>>> up
-=======
-
-const MienNamScreen = () => {
->>>>>>> Stashed changes
   const navigation = useNavigation();
   const [userName, setUserName] = useState('');
 
@@ -49,30 +39,14 @@ const MienNamScreen = () => {
 
     return (
       <View style={{ flex: 1 }}>
-<<<<<<< Updated upstream
-<<<<<<< HEAD
-        <WebView
-=======
         {netInfo.isConnected.toString() == 'true' ? <WebView
->>>>>>> up
-=======
-        <WebView
->>>>>>> Stashed changes
               source={{
                 uri: 'https://nhocbi.com/xoso/miennam?username=' + userName,
                 baseUrl: '',
               }}
               startInLoadingState={true}
-              onMessage={m => onMessage(m)} 
-<<<<<<< Updated upstream
-<<<<<<< HEAD
-            />
-=======
+              onMessage={m => onMessage(m)}
             /> : <View style={styles.container}><Text>Vui lòng kết nối internet để tham gia dự đoán!</Text></View> }
->>>>>>> up
-=======
-            />
->>>>>>> Stashed changes
       </View>
     );
 };

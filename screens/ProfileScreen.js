@@ -5,12 +5,10 @@ import {
   Title,
   Caption,
   Text,
-  TouchableRipple,
 } from 'react-native-paper';
 
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import MaterialIcons from 'react-native-vector-icons/FontAwesome';
 import AsyncStorage from '@react-native-community/async-storage';
 import { MyContext } from '../components/mycontext';
 const ProfileScreen = () => {
@@ -23,9 +21,9 @@ const ProfileScreen = () => {
   const [tongTrung, setThongTrung] = useState("");
 
   const { avataUser } = React.useContext(MyContext);
-    const [stateAvataUser, setStateAvataUser] = avataUser;
-    const { fullNameUser } = React.useContext(MyContext);
-    const [stateFullNameUser, setStateFullNameUser] = fullNameUser;
+  const [stateAvataUser, setStateAvataUser] = avataUser;
+  const { fullNameUser } = React.useContext(MyContext);
+  const [stateFullNameUser, setStateFullNameUser] = fullNameUser;
     
 
   useEffect(() => {
@@ -101,10 +99,10 @@ const ProfileScreen = () => {
           <Icon name="map-marker" color="#777777" size={20}/>
           <Text style={{color:"#777777", marginLeft: 20}}>{userCity ? userCity : '???'} </Text>
         </View>
-        <View style={styles.row}>
+        {/* <View style={styles.row}>
           <Icon name="phone" color="#777777" size={20}/>
           <Text style={{color:"#777777", marginLeft: 20}}>???</Text>
-        </View>
+        </View> */}
         
       </View>
 

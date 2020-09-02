@@ -1,8 +1,5 @@
 import React, {useState, useEffect}from 'react';
 import { View, Text, Button, StyleSheet, FlatList, SafeAreaView } from 'react-native';
-import ListView from 'deprecated-react-native-listview';
-import Toast from 'react-native-simple-toast';
-
 import { openDatabase } from 'react-native-sqlite-storage';
 
 var db = openDatabase({ name: 'sqlite_xoso.db', createFromLocation : 1});

@@ -3,19 +3,19 @@ import { View, Text, Button, StyleSheet, Alert } from 'react-native';
 import { WebView } from 'react-native-webview';
 import AsyncStorage from '@react-native-community/async-storage';
 import {useNavigation} from '@react-navigation/native';
-
+import {useNetInfo} from "@react-native-community/netinfo";
 
 import { openDatabase } from 'react-native-sqlite-storage';
 
 var db = openDatabase({ name: 'sqlite_xoso.db', createFromLocation : 1});
 
 const MienBacScreen = () => {
+  const netInfo = useNetInfo();
   const navigation = useNavigation();
   const [userName, setUserName] = useState('');
 
   useEffect(() => {
     getUser();
-    loadHistoryXoSo();
   }, []);
 
   const onMessage = (m) => {
@@ -40,35 +40,16 @@ const MienBacScreen = () => {
     );
   }
 
-
-  const loadHistoryXoSo = async(v) => {
-    // db.transaction(function (tx) {
-    //   tx.executeSql('DELETE FROM history_xoso');
-    // });
-
-    db.transaction((tx) => {
-      tx.executeSql('SELECT * FROM history_xoso' , '', (tx, results) => {
-        
-        var len = results.rows.length;//chiều dài của mảng
-        console.log(results.rows.item(0).id_mien);
-        if(results.rows.item(0).id_mien == 'mienbac'){
-          
-        }
-      });
-    });
-  }
-
-
     return (
       <View style={{ flex: 1 }}>
-        <WebView
+        {netInfo.isConnected.toString() == 'true' ? <WebView
               source={{
                 uri: 'https://nhocbi.com/xoso/mienbac?username=' + userName,
                 baseUrl: '',
               }}
               startInLoadingState={true}
               onMessage={m => onMessage(m)} 
-            />
+            /> : <View style={styles.container}><Text>Vui lòng kết nối internet để tham gia dự đoán!</Text></View> }
       </View>
     );
 };
