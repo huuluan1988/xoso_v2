@@ -3,8 +3,14 @@ import { View, Text, Button, StyleSheet, Alert } from 'react-native';
 import { WebView } from 'react-native-webview';
 import AsyncStorage from '@react-native-community/async-storage';
 import {useNavigation} from '@react-navigation/native';
+<<<<<<< HEAD
 
 const MienTrungScreen = () => {
+=======
+import {useNetInfo} from "@react-native-community/netinfo";
+const MienTrungScreen = () => {
+  const netInfo = useNetInfo();
+>>>>>>> up
   const navigation = useNavigation();
   const [userName, setUserName] = useState('');
 
@@ -36,14 +42,22 @@ const MienTrungScreen = () => {
 
     return (
       <View style={{ flex: 1 }}>
+<<<<<<< HEAD
         <WebView
+=======
+        {netInfo.isConnected.toString() == 'true' ? <WebView
+>>>>>>> up
               source={{
                 uri: 'https://nhocbi.com/xoso/mientrung?username=' + userName,
                 baseUrl: '',
               }}
               startInLoadingState={true}
               onMessage={m => onMessage(m)}
+<<<<<<< HEAD
             />
+=======
+            /> : <View style={styles.container}><Text>Vui lòng kết nối internet để tham gia dự đoán!</Text></View> }
+>>>>>>> up
       </View>
     );
 };
