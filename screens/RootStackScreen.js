@@ -1,6 +1,7 @@
 import React from 'react';
 
 import { createStackNavigator } from '@react-navigation/stack';
+// import {useNavigation} from '@react-navigation/native'
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import { DrawerContent } from './DrawerContent';
 
@@ -9,7 +10,10 @@ import SplashScreen from './SplashScreen';
 import SignInScreen from './SignInScreen';
 import SignUpScreen from './SignUpScreen';
 
+const RootStack = createStackNavigator();
 const Drawer = createDrawerNavigator();
+// const navigation = useNavigation();
+
 const RootStackScreen = ({}) => (
     <Drawer.Navigator headerMode='none' drawerContent={props => <DrawerContent {...props} />}>
         <Drawer.Screen name="HomeDrawer" component={MainTabScreen}/>

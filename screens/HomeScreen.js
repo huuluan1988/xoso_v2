@@ -1,11 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import {View, StyleSheet, Dimensions, Image, ScrollView, FlatList, Text, Alert} from 'react-native';
+import {View, StyleSheet, Dimensions, Image, ScrollView, FlatList, Text} from 'react-native';
 import {Block, Button, TextView} from '../components';
 import {Colors} from '../components/color';
 import Feather from 'react-native-vector-icons/Feather';
 import AsyncStorage from '@react-native-community/async-storage';
 import {useNavigation} from '@react-navigation/native'
-import NetInfo from "@react-native-community/netinfo";
 
 const W = Dimensions.get('window').width;
 
@@ -55,7 +54,7 @@ const ItemField = ({image, title, total_du_doan, total_du_doan_trung, link}) => 
 };
 
 const HomeScreen = (navigate) => {
-  // const netInfo = useNetInfo();
+
   const [dataSource, setDataSource] = useState([]);
   const [dataSourceMien, setDataSourceMien] = useState([]);
   const [userName, setUserName] = useState('');
@@ -65,20 +64,6 @@ const HomeScreen = (navigate) => {
     loadTyleDuDoan();
     getUser();
     loadUser();
-    
-    NetInfo.fetch().then(state => {
-      if(state.isConnected.toString() == 'false') {
-        Alert.alert(
-          'Thông báo!',
-          'Xin vui lòng kết nối Internet!',
-          [
-            {text: 'Thoát'},
-          ],
-          { cancelable: false }
-        );
-      }
-    });
-
   }, []);
 
   const getUser = async() => {
@@ -121,6 +106,8 @@ const HomeScreen = (navigate) => {
 
   const loadTyleDuDoan = async(v) => {
     let username = await AsyncStorage.getItem('userName');
+    // fetch("http://nhocbi.com/xoso/tyle_du_doan" + '?username=' + username + '&kg_mien=' + v,  {
+      console.log('username',username);
       fetch("https://nhocbi.com/xoso/tyle_du_doan?username=" + username,  {
       headers: {
         "X-Requested-With": "XMLHttpRequest"
@@ -151,7 +138,7 @@ const HomeScreen = (navigate) => {
         </Block> */}
         
         <Block padding={10}>
-      <TextView h6>Số dự đoán hôm nay: </TextView>
+          <TextView h6>Số dự đoán hôm nay:</TextView>
           <Block direction="row" paddingVertical={10}>
           {!dataSource ? <TextView >Bạn chưa tham gia dự đoán ngày hôm nay!</TextView>   : <ScrollView>
             <FlatList
@@ -188,8 +175,30 @@ const HomeScreen = (navigate) => {
                   image= {item.image}
                 />
               )}
-            /> 
-            
+            />
+            {/* <ItemField
+              title="Miền Bắc"
+              total_du_doan={totalDuDoan}
+              total_du_doan_trung={totalDuDoanTrung}
+              link="MienBac"
+              navigate='navigate'
+              icon={require('../assets/img-bac.jpg')}
+            />
+            <ItemField
+              title="Miền Nam"
+              total_du_doan={totalDuDoan}
+              total_du_doan_trung={totalDuDoanTrung}
+              link="MienNam"
+              icon={require('../assets/img-nam.jpg')}
+            />
+            <ItemField
+              title="Miền Trung"
+              total_du_doan={totalDuDoan}
+              total_du_doan_trung={totalDuDoanTrung}
+              link="MienTrung"
+
+              icon={require('../assets/img-trung.jpg')}
+            /> */}
           </Block>
         </Block>
       </Block>
@@ -208,6 +217,9 @@ const styles = StyleSheet.create({
     position: 'absolute',
     top: 100,
     left: -30,
+
+    // width: 50,
+    // height: 80,
   },
   wrapperimage: {
     position: 'absolute',

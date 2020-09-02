@@ -5,8 +5,10 @@ import {
     Avatar,
     Title,
     Caption,
+    Paragraph,
     Drawer
 } from 'react-native-paper';
+import { Container, Header, Content, Button, ListItem, Text,  Left, Body, Right, Switch } from 'native-base';
 import {
     DrawerContentScrollView,
     DrawerItem
@@ -16,6 +18,8 @@ import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import IconMaterial from 'react-native-vector-icons/MaterialIcons';
 import { MyContext } from '../components/mycontext';
 import { AuthContext } from '../components/context';
+
+// import SignInScreen from './SignInScreen';
 
 export function DrawerContent(props) {
 
@@ -32,53 +36,26 @@ export function DrawerContent(props) {
     const [userName, setUserName] = useState('');
     const [fullName, setfullName] = React.useState("");
     useEffect(() => {
-        loadUser();
+        
         getUserInfo();
     }, []);
 
-
-    const loadUser = async() => {
-        let username = await AsyncStorage.getItem('userName');
-        fetch("https://nhocbi.com/xoso/list_user?username=" + username, {
-          headers: {
-            "X-Requested-With": "XMLHttpRequest"
-          }
-        }).then(res => res.json())
-          .then(data => {
-            data.map(v=>{
-            setfullName(v.fullname);
-            setAvata(v.image);
-
-            saveprofile(v);
-           })
-          });
-      }
-
     const getUserInfo = async() => {
+        let fullname = await AsyncStorage.getItem('fullname');
         let username = await AsyncStorage.getItem('userName');
+        let imageAvata = await AsyncStorage.getItem('imageAvata');
+        setfullName(fullname);
         setUserName(username);
+        setAvata(imageAvata);
     }
-
-    const saveprofile = async(v) =>  {
-        await AsyncStorage.setItem('fullname', v.fullname);
-        await AsyncStorage.setItem('city', v.city);
-        await AsyncStorage.setItem('imageAvata', v.image);
-      }
 
     const _shareTextMessage = async() => {
         props.navigation.closeDrawer();
-       
         Share.share({
-            message: 'https://play.google.com/store/apps/details?id=com.huuluan.xoso',
-            title: 'Vui lòng chia sẽ ứng dụng nếu bạn thấy hay!'
-        }, {
-            // Android only:
-            dialogTitle: 'Share',
-            // iOS only:
-            excludedActivityTypes: [
-              'com.apple.UIKit.activity.PostToTwitter'
-            ]
-        })
+            message: 'Vui lòng chia sẽ ứng dụng nếu bạn thấy hay!'
+          })
+          .then(this._showResult)
+          .catch(err => console.log(err))
     }
 
     const _referenceApps =() => {
@@ -92,6 +69,12 @@ export function DrawerContent(props) {
 
         Linking.openURL(url).catch(() => this.dropdown.alertWithType("error", "Sorry!", "Could not open"));
         props.navigation.closeDrawer();
+      }
+
+    const capitalize =(str) => {
+        if (!str == '') {
+            return str.charAt(0).toUpperCase();
+        }
     }
 
     return (
