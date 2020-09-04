@@ -20,13 +20,15 @@ import Animated from 'react-native-reanimated';
 import Toast from 'react-native-simple-toast';
 import ImagePicker from 'react-native-image-crop-picker';
 import { AuthContext } from '../components/context';
+import ImgToBase64 from 'react-native-image-base64';
 
 const EditProfileScreen = () => {
 
   const [image, setImage] = useState('https://nhocbi.com/public/static/templates/frontend/xoso/logo.png');
   const [imageAvata, setAvata] = useState('');
-  const [fullName, setfullName] = React.useState("");
-  const [city, setCity] = React.useState("");
+  const [avataBase64, setavataBase] = React.useState("");
+  const [fullName, setfullName] =  useState('');
+  const [city, setCity] =  useState('');
   const { colors } = useTheme();
 
   const { avataState } = React.useContext(AuthContext);
@@ -97,24 +99,23 @@ const EditProfileScreen = () => {
       cropping: true,
       compressImageQuality: 0.7
     }).then(image => {
-      console.log(image);
       setImage(image.path);
       setAvata(image.path);
+      console.log(image.path);
+
       this.bs.current.snapTo(1);
     });
   }
 
   useEffect(() => {
-    console.log(colors);
     getUserName()
     getImgAvata();
-
+    
   }, []);
 
   const getImgAvata = async () => {
 
     let imageAvata = await AsyncStorage.getItem('imageAvata');
-    console.log('luan222', imageAvata);
     setAvata(imageAvata);
   }
 
@@ -159,6 +160,8 @@ const EditProfileScreen = () => {
   );
 
   const saveProfile = async (fullnameInput, cityInput) => {
+
+    
     if (fullnameInput != '' || fullName) {
       try {
         await AsyncStorage.setItem('imageAvata', imageAvata ? imageAvata : image);
@@ -171,11 +174,23 @@ const EditProfileScreen = () => {
       } catch (e) {
         console.log(e);
       };
+
+      ImgToBase64.getBase64String(image ? image : imageAvata)
+      .then(base64String => {
+        var imgBase64 = base64String;
+        console.log('imgBase64333333',imgBase64);
+        setavataBase(imgBase64);
+      })
+      .catch(err => console.log(err));
+      console.log('imgBase64',avataBase64);
+
       avataState(imageAvata ? imageAvata : image);
       fullNameState(fullnameInput ? fullnameInput : fullName);
 
+      
+      
       let userName = await AsyncStorage.getItem('userName');
-
+     
       return fetch('https://nhocbi.com/xoso/user', {
         method: 'POST',
         headers: {
@@ -186,13 +201,13 @@ const EditProfileScreen = () => {
           username: userName,
           fullname: fullnameInput ? fullnameInput : fullName,
           city: cityInput ? cityInput : city,
-          image: imageAvata ? imageAvata : image,
+          image: avataBase64,
         })
       })
         .then((response) => response.json())
         .then((responseJson) => {
           if (responseJson.Code == 1) {
-            console.log(responseJson);
+            
             showUpdateToast();
             setfullName(fullnameInput ? fullnameInput : fullName );
             setCity(cityInput ? cityInput : city);
