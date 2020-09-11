@@ -23,10 +23,9 @@ import { AuthContext } from '../components/context';
 import ImgToBase64 from 'react-native-image-base64';
 
 const EditProfileScreen = () => {
-
   const [image, setImage] = useState('https://nhocbi.com/public/static/templates/frontend/xoso/logo.png');
   const [imageAvata, setAvata] = useState('');
-  const [avataBase64, setavataBase] = React.useState("");
+  const [avataBase64, setavataBase] = useState([]);
   const [fullName, setfullName] =  useState('');
   const [city, setCity] =  useState('');
   const { colors } = useTheme();
@@ -85,9 +84,12 @@ const EditProfileScreen = () => {
       cropping: true,
       compressImageQuality: 0.7
     }).then(image => {
-      console.log(image);
       setImage(image.path);
       setAvata(image.path);
+      ImgToBase64.getBase64String(image.path).then(base64String => {
+        imgBase64 = 'data:image/png;base64,'+base64String;
+        setavataBase(imgBase64);
+      });
       this.bs.current.snapTo(1);
     });
   }
@@ -101,8 +103,10 @@ const EditProfileScreen = () => {
     }).then(image => {
       setImage(image.path);
       setAvata(image.path);
-      console.log(image.path);
-
+      ImgToBase64.getBase64String(image.path).then(base64String => {
+        imgBase64 = 'data:image/png;base64,'+base64String;
+        setavataBase(imgBase64);
+      });
       this.bs.current.snapTo(1);
     });
   }
@@ -174,20 +178,9 @@ const EditProfileScreen = () => {
       } catch (e) {
         console.log(e);
       };
-
-      ImgToBase64.getBase64String(image ? image : imageAvata)
-      .then(base64String => {
-        var imgBase64 = base64String;
-        console.log('imgBase64333333',imgBase64);
-        setavataBase(imgBase64);
-      })
-      .catch(err => console.log(err));
-      console.log('imgBase64',avataBase64);
-
-      avataState(imageAvata ? imageAvata : image);
-      fullNameState(fullnameInput ? fullnameInput : fullName);
-
       
+      avataState(imageAvata ? imageAvata : image);
+      fullNameState(fullnameInput ? fullnameInput : fullName);      
       
       let userName = await AsyncStorage.getItem('userName');
      
